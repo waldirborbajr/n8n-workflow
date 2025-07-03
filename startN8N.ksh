@@ -11,6 +11,8 @@ fi
 # echo "https://"${ADDR}
 # exit
 
+export N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+export N8N_RUNNERS_ENABLED=true
 export N8N_PROTOCOL=https
 export N8N_HOST=${ADDR}
 export WEBHOOK_URL=https://${ADDR}

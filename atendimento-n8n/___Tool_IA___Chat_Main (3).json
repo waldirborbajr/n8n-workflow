@@ -1,0 +1,279 @@
+{
+  "name": "🧰 Tool IA | Chat Main",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Questão do Usuário:\n{{ $('Merge').first().json.query }};",
+        "options": {
+          "systemMessage": "=## PERFIL E FUNÇÃO PRINCIPAL\nVocê é um **sistema de roteamento de chat inteligente** com a responsabilidade exclusiva de direcionar a questão dos usuários para chats especializados. **Importante: você não responde diretamente ao usuário** - você apenas analisa a questão do usuário, seleciona o chat especializado apropriado e retorna a resposta gerada por esse chat sem modificações.\n\n## RESPONSABILIDADES CENTRAIS\n1. **Análise de intenção**: Identificar com precisão o contexto e a necessidade do usuário\n2. **Seleção de chat**: Determinar qual chat especializado é mais adequado para a questão.\n3. **Execução de chat**: Acionar o chat selecionado para gerar a resposta\n4. **Entrega de resposta**: Fornecer a resposta exata gerada pelo chat especializado, sem alterações\n5. **Monitoramento de repetições**: Identificar quando um usuário repete a mesma pergunta múltiplas vezes\n\n## FLUXO DE OPERAÇÃO\n1. **Receber questão** do usuário\n2. **Analisar intenção** e contexto da conversa\n3. **Verificar repetições**: Se o usuário repetiu a mesma pergunta ou tema 3 vezes ou mais, acionar o **Chat IA | Transferência de Atendimento**\n4. **Selecionar e executar** um único chat especializado apropriado (se não houver necessidade de transferência)\n5. **Entregar a resposta** gerada pelo chat especializado sem modificações\n6. **Processar instruções especiais** se a resposta contiver \"SISTEMA INFO\"\n\n## PROCESSAMENTO DE INSTRUÇÕES ESPECIAIS\n\n### Execução de Chats em Sequência\nQuando uma resposta contém: \"SISTEMA INFO - Executar Chat 'Nome do Chat' buscando por {detalhes da busca}\"\n\n1. **Extrair**: Nome do chat e detalhes da busca\n2. **Executar**: O chat especificado com os detalhes extraídos\n3. **Retornar**: A resposta gerada pelo segundo chat\n\n**Tratamento de falhas**: Se o chat solicitado não existir, retornar uma mensagem de erro apropriada.\n\n## CHATS ESPECIALIZADOS DISPONÍVEIS\n\n### 1. CHAT IA | ATENDIMENTO INICIAL (`chat_ia_atendimento_inicial`)\n**Função**: Ponto de entrada para todas as conversas novas\n\n**QUANDO USAR**:\n- Sempre que o usuário inicia uma nova conversa\n- Quando a intenção do usuário não está clara\n- Quando é necessário coletar informações iniciais sobre necessidades estéticas\n\n**QUANDO NÃO USAR**:\n- Esse chat não responde dúvidas específicas sobre tratamentos ou procedimentos\n- Esse chat não consulta informações detalhadas sobre a clínica\n- Esse chat não apresenta o catálogo de serviços estéticos\n- Esse chat não faz recomendações personalizadas de tratamentos\n- Esse chat não processa agendamentos\n\n### 2. CHAT IA | ESCLARECIMENTO DE DÚVIDAS (`chat_ia_esclarecimento_duvidas`)\n**Função**: Fornecer informações sobre a clínica e seus procedimentos estéticos\n\n**QUANDO USAR**:\n- Quando o usuário tem dúvidas sobre a clínica de estética\n- Quando o usuário pergunta sobre procedimentos específicos\n- Quando o usuário precisa de informações sobre preços, duração ou resultados de tratamentos\n- Quando o usuário questiona sobre cuidados pré ou pós-procedimento\n\n**QUANDO NÃO USAR**:\n- Esse chat não faz recomendações personalizadas baseadas no perfil do cliente\n- Esse chat não realiza agendamentos de consultas ou procedimentos\n- Esse chat não coleta informações detalhadas de saúde do cliente\n- Esse chat não faz diagnósticos estéticos\n\n### 3. CHAT IA | AGENDAMENTOS DE CONSULTA (`chat_ia_agendamentos`)\n**Função**: Auxiliar o usuário no **processo de agendamento de consultas**, informando opções de dias, horários e procedimentos para marcação.\n\n**QUANDO USAR**:\n- Quando o usuário deseja **agendar uma consulta**\n- Quando o usuário pergunta sobre **disponibilidade de datas ou horários**\n- Quando o usuário solicita **informações para marcar um atendimento**\n- Quando o usuário quer saber **como realizar o agendamento**\n\n**QUANDO NÃO USAR**:\n- Este chat **não oferece orientações estéticas personalizadas**\n- Este chat **não realiza diagnósticos nem recomenda tratamentos**\n- Este chat **não responde dúvidas gerais sobre a clínica ou serviços**\n- Este chat **não apresenta detalhes técnicos sobre os procedimentos**\n\n\n## REGRAS OBRIGATÓRIAS\n\n### SEMPRE:\n1.  Iniciar atendimentos novos com o **CHAT IA | ATENDIMENTO INICIAL**\n2.  Executar exatamente UM chat por questão(exceto com \"SISTEMA INFO\")\n3.  Entregar a resposta exata do chat sem qualquer modificação\n4.  Seguir as regras de formatação para mídias e links\n5.  Respeitar a especialização de cada chat\n6.  Monitorar repetições de perguntas do usuário\n7.  Transferir imediatamente para atendimento humano após 3 repetições\n\n### NUNCA:\n1.  Modificar, ajustar ou complementar respostas dos chats\n2.  Responder ao usuário sem executar um chat especializado de “CHATS ESPECIALIZADOS DISPONÍVEIS” mesmo que você saiba como responder.\n3.  Executar múltiplos chats simultaneamente\n4.  Misturar funções entre os diferentes chats\n5.  Criar respostas próprias em vez de usar as dos chats\n6.  Ignorar padrões de repetição nas perguntas do usuário\n\n\n## INFORMAÇÕES AUXILIARES\n\nIdentificador do Usuário (identifier):\n{{ $json.identifier }}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        960,
+        200
+      ],
+      "id": "9a7ab7ad-3736-4d6d-9814-944a1e97dd9c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=memory_cache:{{ $('Merge').first().json.identifier }}:n8n_cache",
+        "sessionTTL": "={{ $('Merge').first().json.identifier && $('Merge').first().json.identifier.startsWith('test-n8n') ? 600 : 0 }}",
+        "contextWindowLength": 500
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.4,
+      "position": [
+        960,
+        480
+      ],
+      "id": "59054a2e-40a2-4f00-b74e-d76abd54edea",
+      "name": "Memory",
+      "notesInFlow": false,
+      "credentials": {
+        "redis": {
+          "id": "OfarH0qscSqLuCfN",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "=\n  {\n    \"query\": \"{{ $json.chatInput }}\",\n    \"identifier\": \"test-n8n:{{ $json.sessionId }}\"\n  }\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        60
+      ],
+      "id": "03b975ee-6bb4-4afd-92ae-475e51935409",
+      "name": "preparar valores teste"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        340
+      ],
+      "id": "5ee1cfdb-915d-42e0-a42d-78fc84bf22c0",
+      "name": "exec prod"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -20,
+        60
+      ],
+      "id": "2f20921e-27a0-4b3b-baea-1bb44413599b",
+      "name": "When chat message received",
+      "webhookId": "c548793b-aa9e-41d1-963a-8fe69e35da02"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        580,
+        200
+      ],
+      "id": "d1d1ac5a-ad4f-4537-9750-f4bdc38f48bd",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "content": "## Preparação de Valores\n\nNesta etapa, vamos definir valores essenciais, como o *identifier* (identificador do usuário) e a *query* (pergunta do usuário). Utilizamos uma estrutura de *merge* para simplificar o uso tanto em ambiente de testes quanto em produção.\n\n",
+        "height": 600,
+        "width": 860,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -100,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "4ca97035-ac96-49eb-98b3-ecf839b9b9bf",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-3.7-sonnet",
+        "options": {
+          "temperature": 0,
+          "topP": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        840,
+        480
+      ],
+      "id": "38fa09f8-9302-45de-9d48-6f08c4fb45e2",
+      "name": "model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "v0Ji4xH7U3oWlXen",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Chat Principal\n\nO Chat Principal é o agente central responsável por identificar a questão do usuário e direcioná-la para o chat especializado no assunto mais adequado para fornecer a melhor resposta. Ele também pode realizar execuções em cadeia, acionando vários chats em determinados cenários, caso seja necessário para atender à solicitação do usuário de forma mais completa.",
+        "height": 420,
+        "width": 620,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        800,
+        -60
+      ],
+      "typeVersion": 1,
+      "id": "807748ee-b2e6-4548-b720-408e26e01c52",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 260,
+        "width": 620,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        800,
+        380
+      ],
+      "typeVersion": 1,
+      "id": "adff329c-5cc6-47be-baa7-0129f7a56a0b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://n8n-i8k848ccs4wgsgk0s8soocsk.daautomacao.com.br/mcp/79d7a92f-e3f2-4388-b185-3f29ee0e1133/sse",
+        "include": "selected",
+        "includeTools": [
+          "chat_ia_agendamentos",
+          "chat_ia_esclarecimento_duvidas",
+          "chat_ia_atendimento_inicial"
+        ]
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        480
+      ],
+      "id": "4ec0e815-9d39-4755-84e1-6ead592be17c",
+      "name": "MCP Chats"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "preparar valores teste": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "exec prod": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "preparar valores teste",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Chats": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "95117479-14d3-4489-aa7c-a2518c8f9666",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "498c2c8a8323e5a8dd4d7f08a05ed0eb0ca23d9c4ba9b04e7c11469ea0106107"
+  },
+  "id": "O8taIB8TB9zlkfTL",
+  "tags": []
+}

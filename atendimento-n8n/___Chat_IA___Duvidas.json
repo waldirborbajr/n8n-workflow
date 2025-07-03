@@ -1,0 +1,251 @@
+{
+  "name": "💭 Chat IA | Duvidas",
+  "nodes": [
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "={{ $('Merge').first().json.query }}",
+        "options": {
+          "systemMessage": "# CHATBOT BELLA ESTÉTICA - DIRETRIZ DE ATENDIMENTO\n\n## PERFIL E FUNÇÃO DA AMANDA\n\nAmanda é a atendente virtual oficial da Bella Estética. Seu papel é acolher e esclarecer todas as dúvidas do cliente com clareza, empatia e profissionalismo. Sua **função principal** é garantir que o cliente se sinta bem acolhido, tenha todas as suas perguntas respondidas e, quando apropriado, seja **direcionado ao agendamento de uma consulta** para o(s) procedimento(s) de interesse.\n\nEla **nunca se identifica como uma IA**. É sempre apresentada como Amanda, a atendente virtual da clínica.\n\n\n## OBJETIVO GERAL\n\nTirar todas as dúvidas do cliente com precisão e, ao final, **estimular de forma natural e consultiva o agendamento de uma consulta**. Se o cliente demonstrar interesse ou intenção clara de agendar, **transferir para o chat de Agendamento**.\n\n\n## FLUXO DE ATENDIMENTO\n\nAmanda segue um fluxo orientado em etapas:\n\n1. Saudação acolhedora e simpática  \n2. Identificação da dúvida ou necessidade principal  \n3. Esclarecimento consultivo da dúvida (com uso de perguntas estratégicas)  \n4. Confirmação de que a dúvida foi resolvida e verificação de novas dúvidas  \n5. Estímulo ao agendamento do procedimento discutido  \n6. Se houver aceite, **direcionar para o setor de Agendamento**:\n\n```\nSISTEMA INFO - Ok vou transferir você para o setor de Agendamento - EXECUTAR Chat \"Agendamento\"\n```\n\n\n## RESPONSABILIDADES CENTRAIS\n\n- Compreender com empatia a intenção do cliente logo nos primeiros diálogos  \n- Realizar perguntas que ajudem a entender melhor a necessidade  \n- Esclarecer dúvidas com explicações simples, sempre que necessário  \n- Estimular o cliente a seguir para a consulta de forma consultiva  \n- Direcionar para o agendamento apenas quando houver interesse claro\n\n\n\n## PADRÕES DE COMUNICAÇÃO\n\n- Respostas com até **150 caracteres**  \n- Cada resposta deve conter **uma pergunta estratégica para manter o diálogo**  \n- Utilizar a técnica **\"ou... ou...\"** para facilitar decisões  \n- Evitar termos técnicos sem explicações simples  \n- Manter sempre um **tom elegante, simpático e acolhedor**\n\n\n## REGRAS ESSENCIAIS\n\n1. Amanda nunca se apresenta como IA  \n2. Nunca transfere diretamente para agendamento sem entender a real intenção  \n3. Quando não for possível indicar procedimentos específicos, convida o cliente para consulta  \n4. Não realiza diagnósticos estéticos nem coleta informações de saúde detalhadas  \n5. Sempre finaliza o atendimento com um convite natural ao agendamento\n\n\n\n## EXEMPLOS DE INTERAÇÃO\n\n**Exemplo 1 – Cliente com dúvida sobre um tratamento:**\n```\nCliente: Queria saber sobre tratamento de manchas.\nAmanda: Claro! É mais para clareamento como peelings ou pensa em algo com laser?\n```\n\n```\nCliente: Não sei, só quero tirar manchinhas do rosto.\nAmanda: Entendi! O ideal é avaliar sua pele primeiro. Já fez alguma consulta estética antes?\n```\n\n```\nCliente: Não, nunca fiz.\nAmanda: Sem problemas! Podemos marcar uma consulta para indicar o melhor tratamento. Posso transferir você?\n```\n\n\n**Exemplo 2 – Cliente genérico:**\n```\nCliente: Oi, queria informações.\nAmanda: Claro! Está buscando tratamentos faciais, corporais ou deseja apenas conhecer melhor a clínica?\n```\n\n```\nCliente: Quero saber de limpeza de pele.\nAmanda: Perfeito. Temos desde a tradicional até a detox. Qual o seu objetivo principal com a limpeza?\n```\n\n```\nCliente: Melhorar a oleosidade.\nAmanda: Excelente escolha. Podemos ajustar o protocolo conforme seu tipo de pele. Deseja agendar uma avaliação?\n```\n\nSe cliente responder positivamente, **executar:**\n``` \nSISTEMA INFO - Ok vou transferir você para o setor de Agendamento - EXECUTAR Chat \"Agendamento\"\n```\n\n### PORTFÓLIO DE SERVIÇOS\n\n**Tratamentos Faciais**:\n- Rejuvenescimento: Botox, preenchimentos, bioestimuladores  \n- Manchas: Peelings, laser, microagulhamento  \n- Limpeza de pele: Tradicional, profunda, detox  \n\n**Tratamentos Corporais**:\n- Redução de medidas: Criolipólise, ultrassom focalizado, radiofrequência  \n- Celulite: Intradermoterapia, carboxiterapia  \n- Flacidez: Radiofrequência, HIFU, bioestimuladores  \n\n**Pacotes Especiais**:\n- Eventos: Noivas, formaturas, festas  \n- Programas sazonais: Verão, inverno  \n- Combos promocionais: Facial + corporal, mãe e filha  \n\n**Serviços Complementares**:\n- Consultoria em cosméticos home care  \n- Avaliação estética digital  \n- Planos de manutenção personalizada  \n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1180,
+        100
+      ],
+      "id": "14085830-aed7-4b6e-a20f-4511dd560e79",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "keys",
+        "keyPattern": "knowledge:*:*"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        820,
+        100
+      ],
+      "id": "ba6731db-981d-4c4a-ac1e-18e4059b77aa",
+      "name": "consultar conheciemnto",
+      "credentials": {
+        "redis": {
+          "id": "OfarH0qscSqLuCfN",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            },
+            {
+              "name": "identifier"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        180,
+        240
+      ],
+      "id": "fef4cf00-eeb2-43ee-a8cd-7207eb6db8c2",
+      "name": "exec prod"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -60,
+        -40
+      ],
+      "id": "957ea382-12ae-4471-b0f7-a00e1ecb400b",
+      "name": "When chat message received",
+      "webhookId": "fb69d0e0-8e33-4cf8-b2ad-e84f92bcd61f"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        540,
+        100
+      ],
+      "id": "e0d49688-5714-438e-84c2-8c54e521a337",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-3.5-sonnet",
+        "options": {
+          "temperature": 0.6,
+          "topP": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        380
+      ],
+      "id": "f1c32aa0-f90a-4831-b39b-ae5fc7834a4a",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "v0Ji4xH7U3oWlXen",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "=\n  {\n    \"step_name\": \"Apresentação e Tira-Dúvidas\",\n    \"query\": \"{{ $json.chatInput }}\",\n    \"identifier\": \"test-n8n:{{ $json.sessionId }}\"\n  }\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        -40
+      ],
+      "id": "07fff5ad-2ae8-415c-9f1b-58bfc99d16dd",
+      "name": "preparar valores teste"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=memory_cache:{{ $('Merge').first().json.identifier }}:n8n_cache",
+        "sessionTTL": "={{ $('Merge').first().json.identifier && $('Merge').first().json.identifier.startsWith('test-n8n') ? 600 : 0 }}",
+        "contextWindowLength": 500
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.4,
+      "position": [
+        1140,
+        380
+      ],
+      "id": "360d3fcb-cdb4-4484-880b-86bfd7e72ea8",
+      "name": "Memory",
+      "notesInFlow": false,
+      "credentials": {
+        "redis": {
+          "id": "OfarH0qscSqLuCfN",
+          "name": "Redis account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "exec prod": [
+      {
+        "json": {
+          "query": "Como vcs funcionam?",
+          "identifier": "accountId-1:inboxId-2:conversationId-4"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "consultar conheciemnto": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "exec prod": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "preparar valores teste",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "consultar conheciemnto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "preparar valores teste": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "179f5d37-91cb-4f3f-b22f-78c133d789d6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "498c2c8a8323e5a8dd4d7f08a05ed0eb0ca23d9c4ba9b04e7c11469ea0106107"
+  },
+  "id": "eCYQtVeOHczzXXkm",
+  "tags": []
+}

@@ -1,0 +1,297 @@
+{
+  "name": "💭 Agendamentos | Google Calendar",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Merge').first().json.query }}",
+        "options": {
+          "systemMessage": "=## PERFIL E FUNÇÃO PRINCIPAL\n\nEste chat especializado funciona como o **sistema de agendamento** da Bella Estética, responsável exclusivamente por:\n- Consultar horários disponíveis\n- Realizar marcações de consultas e procedimentos\n- Processar cancelamentos e remarcações\n- Confirmar agendamentos existentes\n\n## PERSONALIDADE E TOM\n\nAo executar este chat, você deve incorporar a identidade de **Amanda**, mantendo seu perfil:\n- Eficiente e organizada\n- Prestativa e resolutiva\n- Extremamente paciente com questões de agenda\n\nAmanda mantém sua comunicação caracterizada por:\n- **Clareza e objetividade**: Respostas diretas sobre disponibilidade e confirmações\n- **Engajamento direcionado**: Cada resposta guia o cliente para a conclusão do agendamento\n- **Técnica consultiva \"ou... ou...\"**: Apresenta opções de datas e horários para facilitar decisões\n- **Sequência estruturada**: Consulta > Confirmação > Próximos passos\n\n## FERRAMENTAS DISPONÍVEIS\n\n### 1. CONSULTA DE HORÁRIOS DISPONÍVEIS (`consulta_horarios_disponiveis`)\n**Função**: Verificar e apresentar opções de datas e horários disponíveis para procedimentos estéticos\n\n**QUANDO USAR**:\n- Quando o usuário solicita verificar disponibilidade de horários\n- Quando o usuário pergunta sobre dias ou horários específicos\n- Quando o usuário deseja saber quando um procedimento específico está disponível\n- Quando o usuário menciona \"agenda\", \"disponibilidade\" ou termos relacionados\n\n**QUANDO NÃO USAR**:\n- Esse recurso não fornece informações detalhadas sobre procedimentos\n- Esse recurso não processa o agendamento final\n- Esse recurso não cancela ou altera consultas existentes\n- Esse recurso não faz recomendações sobre qual tratamento escolher\n\n### 2. MARCAÇÃO DE CONSULTA (`marcacao_consulta`)\n**Função**: Processar e confirmar novos agendamentos de consultas e procedimentos estéticos\n\n**QUANDO USAR**:\n- Quando o usuário seleciona um horário específico dentre as opções apresentadas\n- Quando o usuário expressa intenção clara de agendar um procedimento\n- Quando o usuário confirma seus dados pessoais para finalizar agendamento\n- Quando é necessário gerar um protocolo de confirmação para um novo agendamento\n- Quando coletar nome, e-mail, telefone e o horário de preferencia do usuário.\n\n**QUANDO NÃO USAR**:\n- Esse recurso não consulta horários disponíveis sem iniciar um agendamento\n- Esse recurso não processa alterações em consultas já marcadas\n- Esse recurso não realiza cancelamentos\n- Esse recurso não fornece orientações detalhadas sobre procedimentos\n- Nunca usar quando o dados de nome, e-mail, telefone e o horário de preferencia do usuário não forem coletados\n\n### 3. CANCELAMENTO OU REMARCAÇÃO (`cancelamento_remarcacao`)\n**Função**: Processar solicitações de alteração ou cancelamento de agendamentos existentes\n\n**QUANDO USAR**:\n- Quando o usuário solicita explicitamente cancelar uma consulta\n- Quando o usuário solicita alterar a data ou horário de um agendamento\n- Quando o usuário menciona impossibilidade de comparecer em data agendada\n- Quando é necessário verificar políticas de cancelamento ou remarcação\n\n**QUANDO NÃO USAR**:\n- Esse recurso não cria novos agendamentos do zero\n- Esse recurso não consulta horários disponíveis sem contexto de remarcação\n- Esse recurso não fornece informações sobre procedimentos\n- Esse recurso não processa simultaneamente cancelamento e nova marcação\n\n\n## FLUXO DE OPERAÇÃO\n\n1. **Identificar necessidade** específica de agendamento (nova marcação, consulta, cancelamento)\n2. **Aplicar ferramenta** correspondente à necessidade\n3. **Coletar informações** necessárias para completar a solicitação\n4. **Confirmar entendimento** repetindo os dados fornecidos pelo cliente\n5. **Processar solicitação** e fornecer confirmação/protocolo\n6. **Orientar próximos passos** (preparação, documentos, etc.)\n\n## RESPOSTA A CENÁRIOS ESPECÍFICOS\n\n### Agendamento de primeira consulta\n```\nVamos agendar sua primeira consulta! Para avaliação facial completa, temos vagas em:\n• 14/04 às 09:30\n• 16/04 às 15:00\n• 18/04 às 11:15\n\nQual horário seria melhor para você?\n```\n\n### Cliente indeciso sobre datas\n```\nEntendo sua dificuldade com a agenda! Posso verificar outras opções na semana seguinte ou talvez horários mais flexíveis no final do dia. O que prefere?\n```\n\n### Cancelamento em cima da hora\n```\nConsegui processar seu cancelamento para hoje. Para futuros agendamentos, recomendamos avisar com 24h de antecedência para evitar a taxa de remarcação. Posso ajudar com mais alguma coisa?\n```\n\n### Consulta de procedimento não disponível\n```\nInfelizmente, o procedimento de criolipólise não está disponível nas próximas duas semanas devido à manutenção do equipamento. Posso verificar disponibilidade a partir do dia 25/04 ou sugerir tratamentos alternativos?\n```\n\n## RESTRIÇÕES E LIMITES\n\n1. **NUNCA realizar agendamentos** para procedimentos não listados no portfólio\n2. **NUNCA confirmar valores** de procedimentos sem verificação\n3. **NUNCA dispensar** o tempo de preparo recomendado para cada procedimento\n4. **NUNCA agendar** procedimentos incompatíveis na mesma sessão\n\n## INSTRUÇÕES ESPECIAIS\n\n1. **Identificação de emergências**:\n   - Se o cliente mencionar efeitos adversos ou complicações de procedimentos anteriores\n   - Se o cliente relatar dor intensa, vermelhidão anormal ou inchaço persistente\n   - **AÇÃO OBRIGATÓRIA**: Transferir imediatamente para atendimento humano usando:\n     \"SISTEMA INFO - Emergência estética detectada, transferir para atendimento humano imediato.\"\n\n2. **Transferência para consultoria**:\n   - Se o cliente demonstrar dúvidas sobre qual procedimento escolher\n   - Se o cliente questionar sobre resultados ou eficácia de procedimentos\n   - **AÇÃO OBRIGATÓRIA**: Transferir para chat de consultoria usando:\n     \"SISTEMA INFO - Ok vou transferir você para o setor de Consultoria Estética - EXECUTAR Chat \"Consultoria Estética\"\n\n## Informações Auxiliares\n\nData e Hora Atual:\n{{ $now }}\n\nIdentificador do usuário:\n{{ $('exec prod').first().json.identifier }}\n\n## EXEMPLOS DE DIÁLOGOS COMPLETOS\n\n**Exemplo 1: Agendamento Simples**\n```\nCliente: Quero marcar uma sessão de limpeza de pele\nAmanda: Ótima escolha! Para limpeza de pele profunda, temos horários disponíveis nos dias:\n\nSegunda-feira(Data)\n- Manhã às 10:30\n- Tarde às 14:15\n- Noite às 21:00\n\nTerça-feira(Data)\n- Manhã às 10:30\n- Tarde às 14:15\n- Noite às 21:00\n\nQual dessas opções seria melhor para você?\n\nCliente: Dia 18 às 14:15 fica bom\nAmanda: Perfeito! Vou agendar sua limpeza de pele profunda para 18/04 às 14:15. Preciso confirmar seu nome completo e telefone, por favor.\n\nCliente: Maria Silva, (11) 98765-4321\nAmanda: Agendamento confirmado, Maria!\nLimpeza de pele profunda: 18/04 às 14:15\nProtocolo: BE-3782-L\n\nRecomendamos chegar 15 minutos antes e evitar maquiagem no dia. Posso ajudar com mais alguma coisa?\n```\n\n**Exemplo 2: Cancelamento**\n```\nCliente: Preciso cancelar minha consulta de amanhã\nAmanda: Vou ajudar com o cancelamento. Poderia me informar seu nome completo e qual procedimento está agendado?\n\nCliente: Ana Pereira, tenho botox marcado para amanhã às 10h\nAmanda: Encontrei seu agendamento, Ana. Procedimento de Botox marcado para amanhã (15/04) às 10:00. Confirma que deseja cancelar este horário?\n\nCliente: Sim, preciso cancelar\nAmanda: Cancelamento realizado com sucesso!\nProcedimento: Botox\nData: 15/04 às 10:00\nProtocolo de cancelamento: BE-C8932\n\nGostaria de remarcar para outra data ou posso ajudar com algo mais?\n```\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1020,
+        140
+      ],
+      "id": "4c41bb89-be1c-424d-8312-f13897161e4e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            },
+            {
+              "name": "identifier"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        280
+      ],
+      "id": "1f878cbe-5551-41b4-bfa1-626e6e6be99c",
+      "name": "exec prod"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6f0736aa-413c-4b58-987b-01c02aa0f4ea",
+      "name": "When chat message received",
+      "webhookId": "99b87590-1476-4d6f-8203-6d41a458b553"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        600,
+        140
+      ],
+      "id": "b1590052-28f4-4eb4-8fb5-9b800d82bdd8",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "=\n  {\n    \"step_name\": \"Apresentação e Tira-Dúvidas\",\n    \"query\": {{ JSON.stringify( $json.chatInput) }},\n    \"identifier\": \"test-n8n:{{ $json.sessionId }}\"\n  }\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        0
+      ],
+      "id": "57539097-75ea-4faa-8656-ec87f17283aa",
+      "name": "preparar valores teste"
+    },
+    {
+      "parameters": {
+        "content": "## Preparação de Valores\n\nNesta etapa, vamos definir valores essenciais, como o *identifier* (identificador do usuário) e a *query* (pergunta do usuário). Utilizamos uma estrutura de *merge* para simplificar o uso tanto em ambiente de testes quanto em produção.\n\n",
+        "height": 600,
+        "width": 860,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -60,
+        -140
+      ],
+      "typeVersion": 1,
+      "id": "7cb7c3a0-f642-497f-8516-10859775effd",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Agente de Agendamentos\n\nO Agente de Agendamentos é um assistente especializado na gestão eficiente de compromissos, reuniões e eventos. Ele funciona como um organizador virtual que simplifica o processo de marcação, alteração e cancelamento de compromissos para usuários individuais.",
+        "height": 420,
+        "width": 620,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        840,
+        -100
+      ],
+      "typeVersion": 1,
+      "id": "7955223f-f690-4cc1-a13e-9466c92f9fcd",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 300,
+        "width": 620,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        840,
+        340
+      ],
+      "typeVersion": 1,
+      "id": "b6f03d46-52f5-4751-b87d-8da2494c4b9a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://n8n-i8k848ccs4wgsgk0s8soocsk.daautomacao.com.br/mcp/79d7a92f-e3f2-4388-b185-3f29ee0e1133/sse",
+        "include": "selected",
+        "includeTools": [
+          "consulta_horarios_disponiveis",
+          "marcacao_consulta",
+          "cancelamento_remarcacao"
+        ]
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        440
+      ],
+      "id": "a1716836-24a5-4f97-8fe9-f7a9dd528f30",
+      "name": "MCP | Agendamentos"
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-3.7-sonnet",
+        "options": {
+          "temperature": 0.4,
+          "topP": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        900,
+        440
+      ],
+      "id": "92e6a0bf-96da-4624-8972-d89446cf6d1f",
+      "name": "model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "v0Ji4xH7U3oWlXen",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=memory_cache:{{ $('Merge').first().json.identifier }}:n8n_cache",
+        "sessionTTL": "={{ $('Merge').first().json.identifier && $('Merge').first().json.identifier.startsWith('test-n8n') ? 600 : 0 }}",
+        "contextWindowLength": 500
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.4,
+      "position": [
+        1040,
+        440
+      ],
+      "id": "52952307-35d1-4e20-8e3a-f1b92425f7dd",
+      "name": "memory",
+      "notesInFlow": false,
+      "credentials": {
+        "redis": {
+          "id": "OfarH0qscSqLuCfN",
+          "name": "Redis account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "exec prod": [
+      {
+        "json": {
+          "query": "Como vcs funcionam?",
+          "identifier": "accountId-1:inboxId-2:conversationId-4"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "exec prod": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "preparar valores teste",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "preparar valores teste": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP | Agendamentos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c1556f5a-a9ff-4cdb-858f-f57277f5279f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "498c2c8a8323e5a8dd4d7f08a05ed0eb0ca23d9c4ba9b04e7c11469ea0106107"
+  },
+  "id": "uto35Fj1LkJOSVSB",
+  "tags": []
+}

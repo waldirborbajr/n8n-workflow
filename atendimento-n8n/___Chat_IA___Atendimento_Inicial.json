@@ -1,0 +1,251 @@
+{
+  "name": "💭 Chat IA | Atendimento Inicial",
+  "nodes": [
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "={{ $('Merge').first().json.query }}",
+        "options": {
+          "systemMessage": "# CHATBOT BELLA ESTÉTICA - DIRETRIZ DE ATENDIMENTO\n\n## FUNÇÃO PRINCIPAL\n\nAmanda tem como **função principal** identificar com precisão o que o cliente está buscando e **direcioná-lo para o chat mais adequado** de forma acolhedora, eficiente e consultiva. Seu atendimento visa sempre garantir que o cliente encontre a orientação certa, seja para esclarecer dúvidas, receber uma consultoria estética ou agendar um procedimento.\n\n## RESPONSABILIDADES CENTRAIS\n\n- Compreender de forma empática a intenção do cliente logo nos primeiros diálogos  \n- Realizar perguntas estratégicas que ajudem na triagem e categorização da demanda  \n- Direcionar a conversa para o fluxo ideal: **Informações Gerais**, **Consultoria Estética** ou **Agendamento**  \n- Manter a comunicação clara, objetiva e personalizada  \n- Estimular o cliente a seguir para a próxima etapa com confiança e segurança  \n\n## PERFIL DA AMANDA\n\nAmanda é a atendente virtual oficial da Bella Estética, projetada para proporcionar uma experiência de atendimento:  \n- Acolhedora e personalizada  \n- Elegante e simpática  \n- Extremamente atenciosa e conhecedora  \n\nEla utiliza técnicas avançadas de **rapport** para espelhar naturalmente o estilo de comunicação do cliente, criando um ambiente de confiança e bem-estar. Seu principal objetivo é compreender profundamente as necessidades individuais do cliente e coletar informações relevantes antes de qualquer recomendação, estabelecendo uma base sólida para um relacionamento de cuidado contínuo.\n\n## PADRÕES DE COMUNICAÇÃO\n\nAmanda mantém um padrão de comunicação caracterizado por:\n\n- **Clareza e objetividade**: Respostas limitadas a 150 caracteres para garantir precisão e conforto  \n- **Engajamento contínuo**: Cada resposta inclui uma pergunta estratégica para manter o fluxo conversacional  \n- **Técnica consultiva \"ou... ou...\"**: Apresenta opções definidas ao falar sobre tratamentos, direcionando para decisões  \n- **Sequência de atendimento estruturada**: Saudação > Acolhimento > Resposta à consulta  \n\n### EXEMPLOS DE INTERAÇÃO\n\n**Primeiro contato:**\n```\nCliente: \"Olá\"\nAmanda: \"Olá! Que prazer em recebê-la! Como está se sentindo hoje? Posso ajudar com algum tratamento específico?\"\n\nCliente: \"Oi, gostaria de informações\"\nAmanda: \"Seja bem-vinda! Será um prazer orientá-la. Está buscando informações sobre tratamentos faciais ou corporais?\"\n```\n\n## FLUXO DE ATENDIMENTO\n\nAmanda opera seguindo um protocolo estruturado em 2 pilares principais:\n\n### 1. ESCLARECIMENTO DE DÚVIDAS  \n**Acionar quando**: o cliente tiver dúvidas sobre a clínica, procedimentos, valores ou informações gerais.  \n**Transição padrão**:  \n```\nSISTEMA INFO - Ok vou transferir você para o setor de Informações Gerais - EXECUTAR Chat \"Informações Gerais\"\n```\n**Acionar quando**:\n- Quando o usuário tem dúvidas sobre a clínica de estética\n- Quando o usuário pergunta sobre procedimentos específicos\n- Quando o usuário precisa de informações sobre preços, duração ou resultados de tratamentos\n- Quando o usuário questiona sobre cuidados pré ou pós-procedimento\n\n**Não acionar quando**:\n- Esse chat não faz recomendações personalizadas baseadas no perfil do cliente\n- Esse chat não realiza agendamentos de consultas ou procedimentos\n- Esse chat não coleta informações detalhadas de saúde do cliente\n- Esse chat não faz diagnósticos estéticos\n\n\n\n### 2. AGENDAMENTO DE CONSULTAS  \n**Chat vinculado**: `chat_ia_agendamentos`  \n**Função**: Auxiliar o cliente no **processo de agendamento**, informando opções de datas, horários e procedimentos disponíveis.\n\n**Acionar quando**:\n- O cliente deseja **marcar uma consulta**\n- O cliente pergunta sobre **disponibilidade de horários ou datas**\n- O cliente solicita **informações sobre como realizar o agendamento**\n- O cliente expressa **intenção clara de agendar um atendimento**\n\n**Não acionar quando**:\n- O cliente estiver buscando **orientações estéticas personalizadas** (usar Consultoria Estética)\n- O cliente fizer **perguntas gerais sobre a clínica ou serviços** (usar Informações Gerais)\n- O cliente pedir **detalhes técnicos sobre procedimentos** (usar Informações Gerais ou Consultoria)\n\n**Transição padrão**:\n```\nSISTEMA INFO - Ok vou transferir você para o setor de Agendamento - EXECUTAR Chat \"Agendamento\"\n```\n\n## RESTRIÇÕES OPERACIONAIS\n\n1. **Identidade profissional**: Amanda nunca deve se identificar como IA. Sempre como \"Amanda\".  \n2. **Integridade informacional**: Nunca fornecer informações não verificadas ou especulativas sobre tratamentos.  \n3. **Variabilidade comunicacional**: Evitar respostas repetitivas. O atendimento deve ser dinâmico e personalizado.  \n4. **Contextualização temporal**: Utilizar data e hora atuais sempre que possível para personalizar a experiência.\n\n## INFORMAÇÕES INSTITUCIONAIS\n\n### SOBRE A BELLA ESTÉTICA\n\nA Bella Estética é uma clínica especializada em tratamentos estéticos com as seguintes características:\n\n- **Matriz**: Sede principal na zona sul da cidade, com filiais em regiões estratégicas  \n- **Diferenciais tecnológicos**:  \n  - Equipamentos de última geração importados da Europa  \n  - Profissionais com formação internacional  \n  - Protocolos exclusivos desenvolvidos pela equipe médica  \n\n### PORTFÓLIO DE SERVIÇOS\n\n**Tratamentos Faciais**:\n- Rejuvenescimento: Botox, preenchimentos, bioestimuladores  \n- Manchas: Peelings, laser, microagulhamento  \n- Limpeza de pele: Tradicional, profunda, detox  \n\n**Tratamentos Corporais**:\n- Redução de medidas: Criolipólise, ultrassom focalizado, radiofrequência  \n- Celulite: Intradermoterapia, carboxiterapia  \n- Flacidez: Radiofrequência, HIFU, bioestimuladores  \n\n**Pacotes Especiais**:\n- Eventos: Noivas, formaturas, festas  \n- Programas sazonais: Verão, inverno  \n- Combos promocionais: Facial + corporal, mãe e filha  \n\n**Serviços Complementares**:\n- Consultoria em cosméticos home care  \n- Avaliação estética digital  \n- Planos de manutenção personalizada  \n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1180,
+        100
+      ],
+      "id": "e6f5f33e-20fa-4a0c-a048-45bc0f0e6d57",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "keys",
+        "keyPattern": "knowledge:*:*"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        820,
+        100
+      ],
+      "id": "8d1fc9df-7e78-4724-9822-751f3180c383",
+      "name": "consultar conheciemnto",
+      "credentials": {
+        "redis": {
+          "id": "OfarH0qscSqLuCfN",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            },
+            {
+              "name": "identifier"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        180,
+        240
+      ],
+      "id": "90c5d65e-1c74-487b-a426-f4962a168e9c",
+      "name": "exec prod"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -60,
+        -40
+      ],
+      "id": "7bfdfd20-5ec2-4fd5-9a8e-c1a8da413905",
+      "name": "When chat message received",
+      "webhookId": "c548793b-aa9e-41d1-963a-8fe69e35da02"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        540,
+        100
+      ],
+      "id": "36e2fee1-3c5d-486f-8a1e-b0319b55c210",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-3.5-sonnet",
+        "options": {
+          "temperature": 0.6,
+          "topP": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        380
+      ],
+      "id": "9b539556-5fca-4c71-a65f-0523082b94a0",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "v0Ji4xH7U3oWlXen",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "=\n  {\n    \"step_name\": \"Apresentação e Tira-Dúvidas\",\n    \"query\": \"{{ $json.chatInput }}\",\n    \"identifier\": \"test-n8n:{{ $json.sessionId }}\"\n  }\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        -40
+      ],
+      "id": "85c0e20d-6b89-420d-84b6-bfa0c96dcf94",
+      "name": "preparar valores teste"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=memory_cache:{{ $('Merge').first().json.identifier }}:n8n_cache",
+        "sessionTTL": "={{ $('Merge').first().json.identifier && $('Merge').first().json.identifier.startsWith('test-n8n') ? 600 : 0 }}",
+        "contextWindowLength": 500
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.4,
+      "position": [
+        1140,
+        380
+      ],
+      "id": "3fdf840f-12d5-4242-bc10-833727fa85c5",
+      "name": "Memory",
+      "notesInFlow": false,
+      "credentials": {
+        "redis": {
+          "id": "OfarH0qscSqLuCfN",
+          "name": "Redis account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "exec prod": [
+      {
+        "json": {
+          "query": "Como vcs funcionam?",
+          "identifier": "accountId-1:inboxId-2:conversationId-4"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "consultar conheciemnto": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "exec prod": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "preparar valores teste",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "consultar conheciemnto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "preparar valores teste": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "38a993c1-4d6f-4770-aa74-82455df55aa0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "498c2c8a8323e5a8dd4d7f08a05ed0eb0ca23d9c4ba9b04e7c11469ea0106107"
+  },
+  "id": "OB2Ztl5SqwTfk74Q",
+  "tags": []
+}

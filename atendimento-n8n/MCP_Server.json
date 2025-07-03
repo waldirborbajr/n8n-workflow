@@ -1,0 +1,486 @@
+{
+  "name": "MCP Server",
+  "nodes": [
+    {
+      "parameters": {
+        "name": "consulta_horarios_disponiveis",
+        "description": "### 1. CONSULTA DE HORÁRIOS DISPONÍVEIS (`consulta_horarios_disponiveis`)\n**Função**: Verificar e apresentar opções de datas e horários disponíveis para procedimentos estéticos\n\n**QUANDO USAR**:\n- Quando o usuário solicita verificar disponibilidade de horários\n- Quando o usuário pergunta sobre dias ou horários específicos\n- Quando o usuário deseja saber quando um procedimento específico está disponível\n- Quando o usuário menciona \"agenda\", \"disponibilidade\" ou termos relacionados\n\n**QUANDO NÃO USAR**:\n- Esse recurso não fornece informações detalhadas sobre procedimentos\n- Esse recurso não processa o agendamento final\n- Esse recurso não cancela ou altera consultas existentes\n- Esse recurso não faz recomendações sobre qual tratamento escolher\n",
+        "workflowId": {
+          "__rl": true,
+          "value": "YYh73ykOUGDknJib",
+          "mode": "list",
+          "cachedResultName": "Tools | Agendamento"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "type": "getDates"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": true
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        40,
+        -180
+      ],
+      "id": "952ee911-2c24-4a51-a531-833d6a2bc988",
+      "name": "Buscar Disponibilidade"
+    },
+    {
+      "parameters": {
+        "name": "marcacao_consulta",
+        "description": "\n### 2. MARCAÇÃO DE CONSULTA (`marcacao_consulta`)\n**Função**: Processar e confirmar novos agendamentos de consultas e procedimentos estéticos\n\n**QUANDO USAR**:\n- Quando o usuário seleciona um horário específico dentre as opções apresentadas\n- Quando o usuário expressa intenção clara de agendar um procedimento\n- Quando o usuário confirma seus dados pessoais para finalizar agendamento\n- Quando é necessário gerar um protocolo de confirmação para um novo agendamento\n\n**QUANDO NÃO USAR**:\n- Esse recurso não consulta horários disponíveis sem iniciar um agendamento\n- Esse recurso não processa alterações em consultas já marcadas\n- Esse recurso não realiza cancelamentos\n- Esse recurso não fornece orientações detalhadas sobre procedimentos\n",
+        "workflowId": {
+          "__rl": true,
+          "value": "YYh73ykOUGDknJib",
+          "mode": "list",
+          "cachedResultName": "Tools | Agendamento"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "type": "scheduleAppointment",
+            "data": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('data', `Será um JSON no sequinte formato exemplar:\n\n{\n    \"nome\": \"jhon Doe\",\n    \"telefone\": \"11999999999\",\n    \"email\": \"test@example.com\",\n    \"agendamento\": \"2023-06-01 10:00\"\n}`, 'string') }}",
+            "identifier": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('identifier', `Será o indentificador do usuário`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        -180
+      ],
+      "id": "7c7be1e8-05ca-4d93-9205-0e00155fdcb8",
+      "name": "marcar consulta"
+    },
+    {
+      "parameters": {
+        "name": "cancelamento_remarcacao",
+        "description": "### 3. CANCELAMENTO OU REMARCAÇÃO (`cancelamento_remarcacao`)\n**Função**: Processar solicitações de alteração ou cancelamento de agendamentos existentes\n\n**QUANDO USAR**:\n- Quando o usuário solicita explicitamente cancelar uma consulta\n- Quando o usuário solicita alterar a data ou horário de um agendamento\n- Quando o usuário menciona impossibilidade de comparecer em data agendada\n- Quando é necessário verificar políticas de cancelamento ou remarcação\n\n**QUANDO NÃO USAR**:\n- Esse recurso não cria novos agendamentos do zero\n- Esse recurso não consulta horários disponíveis sem contexto de remarcação\n- Esse recurso não fornece informações sobre procedimentos\n- Esse recurso não processa simultaneamente cancelamento e nova marcação",
+        "workflowId": {
+          "__rl": true,
+          "value": "YYh73ykOUGDknJib",
+          "mode": "list",
+          "cachedResultName": "Tools | Agendamento"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "type": "cancelAppointment",
+            "identifier": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('identifier', `Será o indentificador do usuário`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": true
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        -180
+      ],
+      "id": "02000bc3-7473-4368-939c-1fb20860bc26",
+      "name": "cancelar consulta"
+    },
+    {
+      "parameters": {
+        "path": "79d7a92f-e3f2-4388-b185-3f29ee0e1133"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        -480
+      ],
+      "id": "2cdecf89-4eca-43d0-9907-d890f1d1e524",
+      "name": "MCP Server Trigger",
+      "webhookId": "79d7a92f-e3f2-4388-b185-3f29ee0e1133"
+    },
+    {
+      "parameters": {
+        "content": "### **Chat - Agendamento** | Funções de Agendamentos\n\nFunções responsáveis por agendar horários, buscar horários disponíveis, listar compromissos e permitir o cancelamento de agendamentos.",
+        "height": 320,
+        "width": 740,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -100,
+        -340
+      ],
+      "typeVersion": 1,
+      "id": "12fc0dce-8a02-49f6-a24a-1b66bf1f298c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "name": "chat_ia_atendimento_inicial",
+        "description": "### 1. CHAT IA | ATENDIMENTO INICIAL (`chat_ia_atendimento_inicial`)\n**Função**: Ponto de entrada para todas as conversas novas\n\n**QUANDO USAR**:\n- Sempre que o usuário inicia uma nova conversa\n- Quando a intenção do usuário não está clara\n- Quando é necessário coletar informações iniciais sobre necessidades estéticas\n\n**QUANDO NÃO USAR**:\n- Esse chat não responde dúvidas específicas sobre tratamentos ou procedimentos\n- Esse chat não consulta informações detalhadas sobre a clínica\n- Esse chat não apresenta o catálogo de serviços estéticos\n- Esse chat não faz recomendações personalizadas de tratamentos\n- Esse chat não processa agendamentos\n",
+        "workflowId": {
+          "__rl": true,
+          "value": "OB2Ztl5SqwTfk74Q",
+          "mode": "list",
+          "cachedResultName": "Chat IA - Atendimento Inicial"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "identifier": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('identifier', `Será o identifier do usuário presente me \"Informações Auxiliares\".`, 'string') }}",
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `Será a questão enviada pelo o usuário`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        40,
+        -520
+      ],
+      "id": "0f12f490-bd66-4534-b159-0308d41d6765",
+      "name": "Atendimento Inicial"
+    },
+    {
+      "parameters": {
+        "name": "chat_ia_esclarecimento_duvidas",
+        "description": "### 2. CHAT IA | ESCLARECIMENTO DE DÚVIDAS (`chat_ia_esclarecimento_duvidas`)\n**Função**: Fornecer informações sobre a clínica e seus procedimentos estéticos\n\n**QUANDO USAR**:\n- Quando o usuário tem dúvidas sobre a clínica de estética\n- Quando o usuário pergunta sobre procedimentos específicos\n- Quando o usuário precisa de informações sobre preços, duração ou resultados de tratamentos\n- Quando o usuário questiona sobre cuidados pré ou pós-procedimento\n\n**QUANDO NÃO USAR**:\n- Esse chat não faz recomendações personalizadas baseadas no perfil do cliente\n- Esse chat não realiza agendamentos de consultas ou procedimentos\n- Esse chat não coleta informações detalhadas de saúde do cliente\n- Esse chat não faz diagnósticos estéticos\n",
+        "workflowId": {
+          "__rl": true,
+          "value": "eCYQtVeOHczzXXkm",
+          "mode": "list",
+          "cachedResultName": "Chat IA - Duvidas"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `Será a questão enviada pelo o usuário`, 'string') }}",
+            "identifier": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('identifier', `Será o identifier do usuário presente me \"Informações Auxiliares\".`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        -520
+      ],
+      "id": "299912a5-b79a-4b7c-9781-51bb72611e01",
+      "name": "Duvidas"
+    },
+    {
+      "parameters": {
+        "name": "chat_ia_agendamentos",
+        "description": "### 3. CHAT IA | AGENDAMENTOS DE CONSULTA (`chat_ia_agendamentos`)\n**Função**: Auxiliar o usuário no **processo de agendamento de consultas**, informando opções de dias, horários e procedimentos para marcação.\n\n**QUANDO USAR**:\n- Quando o usuário deseja **agendar uma consulta**\n- Quando o usuário pergunta sobre **disponibilidade de datas ou horários**\n- Quando o usuário solicita **informações para marcar um atendimento**\n- Quando o usuário quer saber **como realizar o agendamento**\n\n**QUANDO NÃO USAR**:\n- Este chat **não oferece orientações estéticas personalizadas**\n- Este chat **não realiza diagnósticos nem recomenda tratamentos**\n- Este chat **não responde dúvidas gerais sobre a clínica ou serviços**\n- Este chat **não apresenta detalhes técnicos sobre os procedimentos**\n",
+        "workflowId": {
+          "__rl": true,
+          "value": "uto35Fj1LkJOSVSB",
+          "mode": "list",
+          "cachedResultName": "💭 Agendamentos | Google Calendar"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', `Será a questão enviada pelo o usuário`, 'string') }}",
+            "identifier": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('identifier', `Será o identifier do usuário presente me \"Informações Auxiliares\".`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        -520
+      ],
+      "id": "413d87ae-4a71-4f32-8bf3-8ff570aa8115",
+      "name": "Agendamento"
+    },
+    {
+      "parameters": {
+        "content": "### **Chat Principal** | Chats Especializados\n\nSão chats acionados pelo Chat Principal com o objetivo de gerar respostas adequadas para a questão do usuário. Cada chat possui funções e ferramentas específicas, atuando como uma IA especializada que compartilha contexto com os demais chats e com a conversa atual.",
+        "height": 320,
+        "width": 740,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -100,
+        -700
+      ],
+      "typeVersion": 1,
+      "id": "f2752971-133b-4ac5-a487-7617b99bf8a8",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### MCP SERVER TRIGGER\n\nServidor central responsável por concentrar e organizar todas as nossas funções, incluindo lógica de negócios, agendamentos e integrações.\n",
+        "height": 380,
+        "width": 520,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -740,
+        -640
+      ],
+      "typeVersion": 1,
+      "id": "05d46d09-742e-4264-8674-ad12a35ec43f",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Buscar Disponibilidade": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "marcar consulta": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cancelar consulta": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atendimento Inicial": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Duvidas": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agendamento": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "27d838a5-93cd-4da1-82cb-046237d01a2f",
+  "meta": {
+    "instanceId": "498c2c8a8323e5a8dd4d7f08a05ed0eb0ca23d9c4ba9b04e7c11469ea0106107"
+  },
+  "id": "ieKSkn7YvUeL6ZRZ",
+  "tags": [
+    {
+      "createdAt": "2025-04-29T18:46:54.508Z",
+      "updatedAt": "2025-04-29T18:46:54.508Z",
+      "id": "p8DbZC6ghW22SLHK",
+      "name": "MCP SERVER"
+    }
+  ]
+}
