@@ -1,0 +1,167 @@
+{
+  "name": "Balance_report",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "start_date"
+            },
+            {
+              "name": "end_date"
+            },
+            {
+              "name": "tenant_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ff55103c-6a32-45ba-aa86-3baa34894b50",
+      "name": "Input"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "balances",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "gte",
+              "keyValue": "={{ $json.start_date }}"
+            },
+            {
+              "keyName": "created_at",
+              "condition": "lte",
+              "keyValue": "={{ $json.end_date }}"
+            },
+            {
+              "keyName": "tenant_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.tenant_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        180,
+        0
+      ],
+      "id": "d860fde0-9af8-4604-82b8-19beba94bde9",
+      "name": "Get balances",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "5g7R6Y8YLuwpqJpq",
+          "name": "n8n-pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "balances",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        340,
+        0
+      ],
+      "id": "4d2f96fc-5592-496a-8f44-bac4ad57f673",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1e063775-4ab9-432e-a43f-36f89d6aea98",
+              "name": "total",
+              "value": "={{ $json.balances.map(it => it.value || 0).sum() }}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        520,
+        0
+      ],
+      "id": "69452c9e-e1b2-4248-9d54-b4370160d619",
+      "name": "Calculate"
+    }
+  ],
+  "pinData": {
+    "Input": [
+      {
+        "json": {
+          "start_date": "2025-05-01",
+          "end_date": "2025-05-31",
+          "tenant_id": "abc"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Input": {
+      "main": [
+        [
+          {
+            "node": "Get balances",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get balances": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Calculate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5e2165a6-512b-4e99-a91c-7b76233a58b9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e36d5971ba2759f99ab320f5ebcfd5667d63cd92c6f2bb3b0e8b4d7369fa17f0"
+  },
+  "id": "aD3vJ953lnQNwhBc",
+  "tags": []
+}

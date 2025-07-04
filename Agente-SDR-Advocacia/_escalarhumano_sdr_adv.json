@@ -1,0 +1,170 @@
+{
+  "name": "_escalarhumano_sdr_adv",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "nome"
+            },
+            {
+              "name": "telefone"
+            },
+            {
+              "name": "info"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c4c6dcf4-4c8f-46a0-ad83-5c5f4ad08f07",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "43a6bc6c-9034-4c53-8bbd-f52732ad262b",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "da651268-9913-4950-8a37-6030c4249690",
+              "name": "telefone",
+              "value": "={{ $json.telefone }}",
+              "type": "string"
+            },
+            {
+              "id": "29d282d9-1872-4e0b-9fe2-fac9df04fcc7",
+              "name": "info",
+              "value": "={{ $json.info }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ],
+      "id": "6bec227c-fbd4-42af-b594-0aedeb53d44e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "sua url",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "sua apikey"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"558699577622\",\n  \"text\": \"🚀 Lead qualificado pronto para atendimento jurídico!\\n\\n📌 Nome: {{ $json.nome }}\\n📱 Telefone: {{ $json.telefone }}\\n📝 Informações: {{ $json.info }}\\n\\n👉 Iniciar conversa com o lead: https://wa.me/{{ $json.telefone }}?text=Olá%2C%20{{ $json.nome }}%21%20Recebi%20seu%20contato%20e%20vou%20te%20ajudar%20com%20suas%20dúvidas%20jurídicas.%20Podemos%20prosseguir%3F\",\n  \"options\": {\n    \"delay\": 123,\n    \"presence\": \"composing\",\n    \"linkPreview\": false\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "70140d40-b2f1-4950-a955-05d165066e38",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $json.key.remoteJid }}",
+        "messageData": "true"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        660,
+        0
+      ],
+      "id": "9e7fc85e-1e08-4a6f-9b7b-6556eda0d17d",
+      "name": "Redis",
+      "credentials": {
+        "redis": {
+          "id": "7xMr9XN6Jea7YmTy",
+          "name": "Redis account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "nome": "Gustavo",
+          "telefone": "558698665574",
+          "info": "Cliente escolheu a Opção 1 para contratação dos serviços jurídicos para resolver descontos indevidos no benefício do INSS. Ele é de Teresina e se chama Gustavo."
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8ffab1db-281b-4b27-86b1-7bb35f592f60",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b31ea57cb2ebaaa9cb4f4ea5eb8459a438961dec205165fe4a8d08e22161a003"
+  },
+  "id": "a0Z2TbpCJN9apGSU",
+  "tags": []
+}

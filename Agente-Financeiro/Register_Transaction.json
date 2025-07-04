@@ -1,0 +1,477 @@
+{
+  "name": "Register_Transaction",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "operation"
+            },
+            {
+              "name": "value",
+              "type": "number"
+            },
+            {
+              "name": "category"
+            },
+            {
+              "name": "payment_method"
+            },
+            {
+              "name": "registered_at"
+            },
+            {
+              "name": "description"
+            },
+            {
+              "name": "tenant_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1240,
+        180
+      ],
+      "id": "2c347154-7648-46be-9ab0-1600d742659f",
+      "name": "Input"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.operation }}",
+                    "rightValue": "input",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "6df1e742-1def-49d0-96ab-40bac09b4ea3"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Input"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "497e952d-1163-4624-be8e-dd12e8b43d55",
+                    "leftValue": "={{ $json.operation }}",
+                    "rightValue": "output",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Output"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1060,
+        180
+      ],
+      "id": "06b88880-2def-4f92-b2b2-36ebb96ad59e",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "tableId": "transactions",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "value",
+              "fieldValue": "={{ $json.value }}"
+            },
+            {
+              "fieldId": "category",
+              "fieldValue": "={{ $json.category }}"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ $json.description }}"
+            },
+            {
+              "fieldId": "tenant_id",
+              "fieldValue": "={{ $json.tenant_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -840,
+        20
+      ],
+      "id": "9822cafa-4267-4939-b07c-07f7add49199",
+      "name": "Register input",
+      "credentials": {
+        "supabaseApi": {
+          "id": "5g7R6Y8YLuwpqJpq",
+          "name": "n8n-pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "transactions",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "value",
+              "fieldValue": "={{ $json.value*-1 }}"
+            },
+            {
+              "fieldId": "category",
+              "fieldValue": "={{ $json.category }}"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ $json.description }}"
+            },
+            {
+              "fieldId": "tenant_id",
+              "fieldValue": "={{ $json.tenant_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -840,
+        180
+      ],
+      "id": "b6b7b4e2-d9b1-4da4-ace5-496bd7457942",
+      "name": "Register output",
+      "credentials": {
+        "supabaseApi": {
+          "id": "5g7R6Y8YLuwpqJpq",
+          "name": "n8n-pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "errorMessage": "Error on register this operation, please provide input or output values correctly."
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -840,
+        340
+      ],
+      "id": "ec1663fd-109a-4a8c-909b-a10bfccdad77",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -580,
+        100
+      ],
+      "id": "9f202f5f-44f4-4f4d-aa55-46022ca9430f",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "balances",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "keyValue": "={{ DateTime.fromISO($json.registered_at).format('yyyy-MM-dd') }}"
+            },
+            {
+              "keyName": "tenant_id",
+              "keyValue": "={{ $json.tenant_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        100
+      ],
+      "id": "bae140e7-1578-403c-afd1-6d5621ed24c6",
+      "name": "Get balance",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "5g7R6Y8YLuwpqJpq",
+          "name": "n8n-pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d7111546-6ec5-4246-95cd-33c9ef2a25e3",
+              "leftValue": "={{ $json.keys().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -220,
+        100
+      ],
+      "id": "4ae423eb-c1a9-4d84-af9a-1663ed8d9cf5",
+      "name": "New Balance?"
+    },
+    {
+      "parameters": {
+        "tableId": "balances",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "value",
+              "fieldValue": "={{ $('Merge').item.json.value }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ DateTime.fromISO($('Merge').item.json.registered_at).format('yyyy-MM-dd') }}"
+            },
+            {
+              "fieldId": "tenant_id",
+              "fieldValue": "={{ $('Merge').item.json.tenant_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ab6b816e-c0e1-45b7-9e9d-a2a60266976e",
+      "name": "Create new balance",
+      "credentials": {
+        "supabaseApi": {
+          "id": "5g7R6Y8YLuwpqJpq",
+          "name": "n8n-pessoal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "balances",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "value",
+              "fieldValue": "={{ $json.value + $('Merge').item.json.value }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "id": "2838efee-90ff-4512-a98c-66c54b873746",
+      "name": "Update balance",
+      "credentials": {
+        "supabaseApi": {
+          "id": "5g7R6Y8YLuwpqJpq",
+          "name": "n8n-pessoal"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Input": [
+      {
+        "json": {
+          "operation": "input",
+          "value": 100,
+          "category": "Combustível",
+          "payment_method": "pix",
+          "registered_at": "2025-05-20",
+          "description": "",
+          "tenant_id": "abc"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Input": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Register input",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Register output",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Register input": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Register output": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Get balance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get balance": {
+      "main": [
+        [
+          {
+            "node": "New Balance?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New Balance?": {
+      "main": [
+        [
+          {
+            "node": "Create new balance",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update balance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6acae9fd-cf7d-4fd0-b43f-9c50cbdb3bce",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e36d5971ba2759f99ab320f5ebcfd5667d63cd92c6f2bb3b0e8b4d7369fa17f0"
+  },
+  "id": "XRW4tWd63fgFJvYh",
+  "tags": []
+}
