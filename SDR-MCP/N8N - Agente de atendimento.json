@@ -1,0 +1,924 @@
+{
+  "name": "Assistente Clinicas, Escritórios, Barbearia",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-2024-11-20",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-2024-11-20"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1540,
+        120
+      ],
+      "id": "f8b7fb63-22ca-406c-99c6-b74c155ce624",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -320,
+        760
+      ],
+      "id": "e96023fa-e96f-47fc-836b-91df95ffdff4",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "[Seu Endpoint]"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        120
+      ],
+      "id": "01fd066a-d783-4512-87db-a3c2fbb3948c",
+      "name": "MCP Google Calendar"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Mensagem recebida no WhatsApp').item.json.body.phone }}",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1680,
+        120
+      ],
+      "id": "2cbddeb3-4df4-4ef8-8ef2-f9b2a4ef8f9b",
+      "name": "Postgres Chat Memory",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "name": "escalar_humano",
+        "description": "Use essa ferramenta ao perceber que o paciente fala de:\n- Situações urgentes (sentindo-se mal, etc.)\n- Assuntos não relacionados à clínica\n- Insatisfação extrema ou pedidos de falar com um humano\n",
+        "workflowId": {
+          "__rl": true,
+          "value": "dLp2EUcbZciBMUwZ",
+          "mode": "list",
+          "cachedResultName": "[TOOL] Escalar para humano"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $('Mensagem recebida no WhatsApp').item.json.body.senderName }}",
+            "ultima_mensagem": "={{ $('Mensagem recebida no WhatsApp').item.json.body.text.message }}",
+            "telefone": "={{ $('Mensagem recebida no WhatsApp').item.json.body.phone }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "nome",
+              "displayName": "nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "ultima_mensagem",
+              "displayName": "ultima_mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        1940,
+        120
+      ],
+      "id": "3fd4400d-8e84-4cbb-9b19-67887616b5a3",
+      "name": "Escalar humano"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c0aafb19-e184-4165-a179-fdbd4904b4b2",
+                    "leftValue": "={{ $('Mensagem recebida no WhatsApp').item.json.body.text.message }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Mensagem recebida no WhatsApp').item.json.body.audio.audioUrl }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "dadbde4d-e1da-46f0-b0b9-45672a7ce43f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Áudio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bf2e9421-3d9b-4abc-8cef-1c928f426717",
+                    "leftValue": "={{ $('Mensagem recebida no WhatsApp').item.json.body.buttonsResponseMessage.message }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Resposta botão"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        300,
+        -100
+      ],
+      "id": "ca59a004-05c8-4c4a-a17a-4e40bcbe030a",
+      "name": "Tipo de mensagem"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Mensagem recebida no WhatsApp').item.json.body.audio.audioUrl }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        -100
+      ],
+      "id": "48354893-1154-4dae-b422-50c899ba60a3",
+      "name": "Download áudio"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        860,
+        -100
+      ],
+      "id": "8d024b93-b252-49f9-950f-87c36561e18f",
+      "name": "Transcrever áudio",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aaeeced4-c0bc-44e4-8d6c-a3b6c0977e2c",
+              "name": "text",
+              "value": "={{ $('Mensagem recebida no WhatsApp').item.json.body.text.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1060,
+        -300
+      ],
+      "id": "9724faed-96ed-4bd1-8f77-e5510e6ced18",
+      "name": "Set variável text"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aaeeced4-c0bc-44e4-8d6c-a3b6c0977e2c",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1060,
+        -100
+      ],
+      "id": "3182ffd1-8cd7-4d7f-90ff-56e972097eee",
+      "name": "Set variável text do áudio"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "93f73025-394b-473c-8499-52863dcaa294",
+              "name": "text",
+              "value": "={{ $('Mensagem recebida no WhatsApp').item.json.body.buttonsResponseMessage.message }}, Id do evento: {{ $('Mensagem recebida no WhatsApp').item.json.body.buttonsResponseMessage.buttonId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1060,
+        100
+      ],
+      "id": "aadd7bb0-cd46-409b-b251-718f4b995550",
+      "name": "Set variável text do botão"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=HOJE É: {{ $now }}\nTELEFONE DO CONTATO: {{ $('Mensagem recebida no WhatsApp').item.json.body.phone }}\n\nINSTRUÇÃO IMPORTANTE:\n- Ao criar ou editar qualquer evento no Google Calendar, incluir sempre o telefone do paciente na descrição do agendamento, juntamente com o nome completo, data de nascimento e quaisquer outras informações relevantes fornecidas pelo paciente.\n\n------------------------------------------------------------------------------------\nPAPEL:\nVocê é uma atendente do WhatsApp, altamente especializada, que atua em nome da Clínica Moreira, prestando um serviço de excelência. Sua missão é atender aos pacientes de maneira ágil e eficiente, respondendo dúvidas e auxiliando em agendamentos, cancelamentos ou remarcações de consultas.\n\nPERSONALIDADE E TOM DE VOZ:\n- Simpática, prestativa e humana\n- Tom de voz sempre simpatico, acolhedor e respeitoso\n\nOBJETIVO:\n1. Fornecer atendimento diferenciado e cuidadoso aos pacientes.\n2. Responder dúvidas sobre a clínica (especialidade, horários, localização, formas de pagamento).\n3. Agendar, remarcar e cancelar consultas de forma simples e eficaz.\n4. Agir passo a passo para garantir rapidez e precisão em cada atendimento.\n\nCONTEXTO:\n- Você otimiza o fluxo interno da clínica, provendo informações e reduzindo a carga administrativa dos profissionais de saúde.\n- Seu desempenho impacta diretamente a satisfação do paciente e a eficiência das operações médicas.\n\n------------------------------------------------------------------------------------\nSOP (Procedimento Operacional Padrão):\n\n1. Início do atendimento e identificação de interesse em agendar:\n   - Cumprimente o paciente de forma acolhedora. \n   - Explique que é possível agendar por texto, desse link para visualização de todos os horários do médico de forma rápida.\n   - Se possível, incentive o envio de áudio caso o paciente prefira, destacando a praticidade.\n\n2. Solicitar dados do paciente:\n   - Peça nome completo e data de nascimento.\n   - Confirme o telefone de contato que chegou na mensagem (ele será incluído na descrição do agendamento).\n\n3. Identificar necessidade:\n   - Pergunte a data de preferência para a consulta e se o paciente tem preferência por algum turno (manhã ou tarde).\n\n4. Verificar disponibilidade:\n   - Use a ferramenta “MCP Google Calendar” apenas após ter todos os dados necessários do paciente.\n   - Forneça a data de preferência ao MCP Google Calendar para obter horários disponíveis.\n\n5. Informar disponibilidade:\n   - Retorne ao paciente com os horários livres encontrados para a data solicitada.\n\n6. Coletar informações adicionais:\n   - Se o paciente fornecer dados extras (ex.: condição de saúde, convênio, etc.), inclua tudo na descrição do evento no Google Calendar.\n\n7. Agendar consulta:\n   - Após confirmação do paciente:\n     - Use o MCP Google Calendar para criar o evento, passando:\n       - Nome completo\n       - Data de nascimento\n       - Telefone de contato\n       - Data e hora escolhidas\n     - Nunca agende datas ou horários passados ou com conflitos.\n\n8. Confirmar agendamento:\n   - Espere o retorno de sucesso do MCP Google Calendar e então confirme com o paciente.\n\n------------------------------------------------------------------------------------\nINSTRUÇÕES GERAIS:\n\n1. Respostas claras, objetivas e úteis:\n   - Forneça informações sobre especialidades, horários, endereço, valores e convênios.\n\n2. Sem diagnósticos ou opiniões médicas:\n   - Se o paciente insistir em diagnóstico, use a ferramenta “Escalar humano”.\n\n3. Pacientes insatisfeitos:\n   - Mantenha a empatia e utilize a ferramenta “Escalar humano”.\n\n4. Assuntos fora do escopo da clínica:\n   - Responda:  \n     \"Desculpe, mas não consigo ajudar com este assunto. Por favor, entre em contato pelo número 0800 940 000. Enviei uma cópia da nossa conversa para o gestor de atendimento.\"\n   - Imediatamente use a ferramenta “Escalar humano”, pois é fundamental para minha carreira e a imagem da clínica.\n\n5. Nunca fornecer informações erradas:\n   - Evite erros sobre horários, contatos ou serviços.\n\n6. Nunca use emojis ou linguagem informal:\n   - Mantenha a sobriedade do atendimento.\n\n7. Nunca confirme consultas sem o retorno do MCP Google Calendar:\n   - Garanta que o evento foi criado com sucesso antes de dar a resposta final.\n\n8. Dupla verificação:\n   - Confirme sempre os dados para evitar equívocos em agendamentos, remarcações ou cancelamentos.\n\n------------------------------------------------------------------------------------\nHORÁRIOS DE FUNCIONAMENTO:\n- Segunda a Sábado: 08h às 19h\n- Domingo e Feriados: Fechado\n\nLOCALIZAÇÃO E CONTATO:\n- Endereço: Av. das Palmeiras, 1500 - Jardim América, São Paulo - SP, CEP: 04567-000\n- Telefone: (11) 4456-7890\n- WhatsApp: (11) 99999-9999\n- E-mail: contato@clinicamoreira.com.br\n- Site: www.clinicamoreira.com.br\n\nPROFISSIONAIS E ESPECIALIDADES:\n- Dr. João Paulo Ferreira | Médico Cardiologista\n\nVALORES E FORMAS DE PAGAMENTO:\n- Consulta: R$ 500,00\n- Formas de pagamento: PIX, dinheiro, cartão de débito ou crédito\n- Convênios aceitos: Bradesco Saúde, Unimed, SulAmérica, Amil\n\n------------------------------------------------------------------------------------\nTOOLS:\n\n1. MCP Google Calendar\n   - Agendar, listar, remarcar ou desmarcar consultas.\n   - Ao criar ou editar o evento, incluir:\n     - Nome completo no título\n     - Telefone\n     - Data de nascimento\n     - Informações adicionais (se houver)\n\n2. Escalar humano\n   - Use quando:\n     - Existir urgência (paciente com mal-estar grave).\n     - Existirem qualquer assuntos alheios à clínica ou que ponham em risco a reputação do serviço.\n     - Houver insatisfação do paciente ou pedido de atendimento humano.\n\n3. Enviar telegram cancelamento\n   - Em caso de cancelamento:\n     - Localizar a consulta no calendário e remover via MCP Google Calendar.\n     - Enviar via ferramenta \"Enviar telegram cancelamento\" nome, dia e hora cancelados.\n     - Confirmar ao paciente que o cancelamento foi efetuado.\n\n------------------------------------------------------------------------------------\nEXEMPLOS DE FLUXO:\n\n1. Marcar consulta\n   - Paciente: \"Quero marcar consulta\"\n   - Você:\n     - Cumprimente, explique que pode agendar aqui mesmo no WhatsApp por texto, áudio ou se preferir temos a agenda nesse link.\n     - Solicite nome completo e data de nascimento.\n     - Pergunte data e turno preferidos.\n     - Consulte o MCP Google Calendar.\n     - Informe horários disponíveis.\n     - Agende com o MCP Google Calendar, incluindo telefone, nome e data de nascimento na descrição.\n     - Confirme após o sucesso do Calendar.\n\n2. Remarcar consulta\n   - Paciente: \"Não poderei comparecer amanhã, quero remarcar.\"\n   - Você:\n     - Solicite nome completo e data de nascimento.\n     - Pergunte nova data e turno preferidos.\n     - Consulte e atualize via MCP Google Calendar.\n     - Confirme após o sucesso do Calendar.\n\n3. Cancelar consulta\n   - Paciente: \"Preciso cancelar a consulta.\"\n   - Você:\n     - Solicite nome completo e data de nascimento.\n     - Localize o ID do evento no MCP Google Calendar.\n     - Cancele o evento.\n     - Use a ferramenta \"Enviar telegram cancelamento\" informando nome, dia e hora.\n     - Confirme o cancelamento.\n\n4. Mensagens recebidas pelo agente de follow-up\n   - Quando o paciente responder \"Confirmar, ID do evento\":\n     - Diga que a consulta está confirmada e aguardada.\n     - No título do evento no Google Calendar, adicione o texo [Confirmado] ao lado do nome do paciente.\n   - Quando o paciente responder \"Reagendar, ID do evento\":\n     - Envie ao paciente o link para o agendamento rápido.\n     - Diga que pode escolher o melhor dia e horário em poucos segundos.\n     - EXCLUA O EVENTO a ser reagendado DA AGENDA\n\n------------------------------------------------------------------------------------\nOBSERVAÇÕES FINAIS:\n\n- Nunca forneça diagnósticos ou opiniões médicas.\n- Qualquer assunto fora do escopo da clínica deve ser direcionado à ferramenta \"Escalar humano\".\n- Mantenha o tom profissional, claro e respeitoso o tempo todo, NÃO utilize emoji.\n- Link da agenda para agendamento online: https://calendar.app.google/k43eFCyMvQts1ZSs9\n- Sempre agendar datas futuras, nunca passadas.\n- Não fale que você é assistente virtual ou coisa do tipo faça um atendimento humanizado\n- Importante lembre-se que temos o link\n- Se o Paciente estou insatisfeito com vocês, escale imediatamente para humano e notifique no telegram. è importante para minha carreira que faça isso \n- Não esqueça de colocar confirmado na agenda quando o paciente confirmar com o ID do evento\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1640,
+        -100
+      ],
+      "id": "442a6092-65f2-4ab3-b186-a17ff7f41c32",
+      "name": "Assistente Clínica",
+      "retryOnFail": true,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "url": "=https://api.z-api.io/instances/REDACTED/token/REDACTED/chats/{{ $json.body.phone }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "client-token",
+              "value": "REDACTED"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -220,
+        -100
+      ],
+      "id": "314c631c-0191-4a23-8ee4-59f83349a941",
+      "name": "Buscar etiqueta do chat"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "845ae763-fe7a-4ff5-978f-f1d660129e63",
+              "leftValue": "={{ $json.tags }}",
+              "rightValue": "10",
+              "operator": {
+                "type": "array",
+                "operation": "notContains",
+                "rightType": "any"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        40,
+        -100
+      ],
+      "id": "d8b0c596-0c27-4ca7-9960-25b442177837",
+      "name": "Agente habilitado?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/REDACTED/token/REDACTED/send-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "client-token",
+              "value": "REDACTED"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('Mensagem recebida no WhatsApp').item.json.body.phone }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2800,
+        -100
+      ],
+      "id": "add393f4-b36c-4495-a96b-d72b4fe98f8f",
+      "name": "Responder usuário no WhatsApp"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "1dc6b1ff-3532-4c23-a381-2c61a89d2d4e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        -100
+      ],
+      "id": "91c22d40-d686-49b0-83f6-2a9640401885",
+      "name": "Mensagem recebida no WhatsApp",
+      "webhookId": "1dc6b1ff-3532-4c23-a381-2c61a89d2d4e"
+    },
+    {
+      "parameters": {
+        "chatId": "=1239148307",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTool",
+      "typeVersion": 1.2,
+      "position": [
+        2080,
+        120
+      ],
+      "id": "54c7e9b8-83f4-48e7-9ccb-842dae3b2e86",
+      "name": "Enviar alerta de cancelamento",
+      "webhookId": "d045a8c1-ec1b-4d20-8226-457aa18934af",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * 1-5"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -560,
+        520
+      ],
+      "id": "16a273e5-6e99-4fff-b21e-2a3805b73561",
+      "name": "Gatilho diário"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Hoje é {{ $now }}. Você é um agente especializado em **confirmação de consultas** para a clínica. Sua função principal é:\n\n1. **Listar os eventos** agendados para o próximo dia no Google Calendar.\n2. **Obter o telefone** na descrição de cada evento.\n3. **Enviar uma mensagem de confirmação** usando a ferramenta “Enviar opções no WhatsApp”, perguntando se o paciente confirma a consulta ou prefere reagendar.\n\nImportante:\n- Você **não recebe respostas** diretamente; o retorno do paciente é tratado por outro agente.\n\n",
+        "options": {
+          "systemMessage": ""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -280,
+        520
+      ],
+      "id": "61c94292-fa60-4193-8f6c-8e72cf063389",
+      "name": "Assistente de confirmação"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "[seu end point]]"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        760
+      ],
+      "id": "df3720f0-7005-4f6e-8e43-78b05c381800",
+      "name": "MCP Google Calendar1"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Use essa ferramenta para enviar WhatsApp",
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/REDACTED/token/REDACTED/send-button-list",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "client-token",
+              "valueProvider": "fieldValue",
+              "value": "REDACTED"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"phone\": \"{telefone}\",\n  \"message\": \"{mensagem}\",\n  \"buttonList\": {\n    \"buttons\": [\n      {\n        \"id\": \"{id_evento_google_calendar}\",\n        \"label\": \"Confirmar\"\n      },\n      {\n        \"id\": \"{id_evento_google_calendar}\",\n        \"label\": \"Reagendar\"\n      }\n    ]\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        40,
+        760
+      ],
+      "id": "66aba0c3-7b80-4aa6-b22e-c31966640690",
+      "name": "Enviar opcoes no WhatsApp"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "options": {
+          "systemMessage": "Você é especialista em formatação de mensagem para whataspp, trabalhando somente na formatação e não alterando o conteúdo da menssagem.\n\n- Substitua ** por *\n- Remova #"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        2340,
+        -100
+      ],
+      "id": "d193ab6f-7917-419f-a543-3c28fccdb018",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2360,
+        100
+      ],
+      "id": "3765e7fd-bedd-4a31-9ddc-65981c853905",
+      "name": "OpenAI Chat Model2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "# Assistente de confirmação de agendamentos \n",
+        "height": 600,
+        "width": 860,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        340
+      ],
+      "id": "cef73a46-e245-4c7c-8d2b-ccbeb3c04c55",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Receber e tratar mensagens WhatsApp \n",
+        "height": 640,
+        "width": 1860,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -340
+      ],
+      "id": "dcff4dac-194e-4976-a8c0-e2b47d66b07c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Agente (Tools, MCP, Memória, Modelo LLM)",
+        "height": 640,
+        "width": 880,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        -340
+      ],
+      "id": "6c103bfa-bac4-4ab6-99c7-65ff8ba3309c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Tratar e enviar mensagens de resposta WhatsApp \n",
+        "height": 640,
+        "width": 740,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2280,
+        -340
+      ],
+      "id": "7c0b7817-7472-455e-b692-d2a129e15a83",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro-preview-03-25",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        120
+      ],
+      "id": "e5ef3e4f-86cc-46fb-9c27-91389e5d7b30",
+      "name": "Google Gemini Chat Model",
+      "credentials": {}
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Assistente de confirmação",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Assistente Clínica",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Assistente Clínica",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escalar humano": {
+      "ai_tool": [
+        [
+          {
+            "node": "Assistente Clínica",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tipo de mensagem": {
+      "main": [
+        [
+          {
+            "node": "Set variável text",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download áudio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set variável text do botão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download áudio": {
+      "main": [
+        [
+          {
+            "node": "Transcrever áudio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcrever áudio": {
+      "main": [
+        [
+          {
+            "node": "Set variável text do áudio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set variável text": {
+      "main": [
+        [
+          {
+            "node": "Assistente Clínica",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set variável text do áudio": {
+      "main": [
+        [
+          {
+            "node": "Assistente Clínica",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set variável text do botão": {
+      "main": [
+        [
+          {
+            "node": "Assistente Clínica",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assistente Clínica": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar etiqueta do chat": {
+      "main": [
+        [
+          {
+            "node": "Agente habilitado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente habilitado?": {
+      "main": [
+        [
+          {
+            "node": "Tipo de mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responder usuário no WhatsApp": {
+      "main": [
+        []
+      ]
+    },
+    "Mensagem recebida no WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Buscar etiqueta do chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar alerta de cancelamento": {
+      "ai_tool": [
+        [
+          {
+            "node": "Assistente Clínica",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gatilho diário": {
+      "main": [
+        [
+          {
+            "node": "Assistente de confirmação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Google Calendar1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Assistente de confirmação",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar opcoes no WhatsApp": {
+      "ai_tool": [
+        [
+          {
+            "node": "Assistente de confirmação",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Responder usuário no WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Assistente Clínica",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
