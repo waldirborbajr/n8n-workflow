@@ -67,6 +67,7 @@ services:
       - POSTGRES_USER=n8n
       - POSTGRES_PASSWORD=n8n_password
       - POSTGRES_DB=n8n
+      - POSTGRES_MULTIPLE_DATABASES=chatwoot
       - GENERIC_TIMEZONE=America/Sao_Paulo
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -105,7 +106,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.n8n.rule=Host(`n8n.example.com`)"
-      - "traefik.http.routers.n8n.entrypoints=web"
+      - "traefik.http.routers.n8n.entrypoints=websecure"
+      - "traefik.http.routers.n8n.tls=true"
+      - "traefik.http.routers.n8n.tls.certresolver=mytlschallenge"
       - "traefik.http.services.n8n.loadbalancer.server.port=5678"
     <<: *n8n-common
 
@@ -114,11 +117,45 @@ services:
     command: worker
     <<: *n8n-common
 
+  chatwoot:
+    image: chatwoot/chatwoot:latest
+    command: bundle exec rails server -b 0.0.0.0 -p 3000
+    environment:
+      - RAILS_ENV=production
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USERNAME=n8n
+      - POSTGRES_PASSWORD=n8n_password
+      - POSTGRES_DATABASE=chatwoot
+      - FRONTEND_URL=https://chatwoot.example.com
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+      - SECRET_KEY_BASE=your-secret-key-base
+      - ACTIVE_STORAGE_SERVICE=local
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - chatwoot_data:/app/storage
+    networks:
+      - n8n-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chatwoot.rule=Host(`chatwoot.example.com`)"
+      - "traefik.http.routers.chatwoot.entrypoints=websecure"
+      - "traefik.http.routers.chatwoot.tls=true"
+      - "traefik.http.routers.chatwoot.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.chatwoot.loadbalancer.server.port=3000"
+    logging: *default-logging
+
 volumes:
   postgres_data:
   redis_data:
   n8n_data:
   letsencrypt_data:
+  chatwoot_data:
 
 networks:
   n8n-network:
