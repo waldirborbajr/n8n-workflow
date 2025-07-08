@@ -1,0 +1,104 @@
+version: '3.8'
+
+x-shared:
+  &n8n-common
+  environment:
+    - DB_TYPE=postgresdb
+    - DB_POSTGRESDB_HOST=postgres
+    - DB_POSTGRESDB_PORT=5432
+    - DB_POSTGRESDB_DATABASE=n8n
+    - DB_POSTGRESDB_USER=n8n
+    - DB_POSTGRESDB_PASSWORD=n8n_password
+    - QUEUE_MODE=redis
+    - QUEUE_REDIS_HOST=redis
+    - QUEUE_REDIS_PORT=6379
+    - EXECUTIONS_MODE=queue
+    - N8N_ENCRYPTION_KEY=your-secure-encryption-key
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  volumes:
+    - n8n_data:/home/node/.n8n
+  networks:
+    - n8n-network
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "5"
+      compress: "true"
+
+services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - n8n-network
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=n8n
+      - POSTGRES_PASSWORD=n8n_password
+      - POSTGRES_DB=n8n
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - n8n-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U n8n"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7
+    volumes:
+      - redis_data:/data
+    networks:
+      - n8n-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  n8n-master:
+    image: n8nio/n8n:latest
+    command: start
+    environment:
+      - N8N_HOST=n8n.example.com
+      - N8N_PROTOCOL=http
+      - N8N_PORT=5678
+      - WEBHOOK_URL=http://n8n.example.com/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.n8n.rule=Host(`n8n.example.com`)"
+      - "traefik.http.routers.n8n.entrypoints=web"
+      - "traefik.http.services.n8n.loadbalancer.server.port=5678"
+    <<: *n8n-common
+
+  n8n-worker:
+    image: n8nio/n8n:latest
+    command: worker
+    <<: *n8n-common
+
+volumes:
+  postgres_data:
+  redis_data:
+  n8n_data:
+
+networks:
+  n8n-network:
+    driver: bridge
