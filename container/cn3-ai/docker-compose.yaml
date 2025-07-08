@@ -41,13 +41,22 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.mytlschallenge.acme.tlschallenge=true"
+      - "--certificatesresolvers.mytlschallenge.acme.email=${SSL_EMAIL}"
+      - "--certificatesresolvers.mytlschallenge.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
+      - "443:443"
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt_data:/letsencrypt
     environment:
       - GENERIC_TIMEZONE=America/Sao_Paulo
+      - SSL_EMAIL
     networks:
       - n8n-network
     logging: *default-logging
@@ -109,120 +118,7 @@ volumes:
   postgres_data:
   redis_data:
   n8n_data:
-
-networks:
-  n8n-network:
-    driver: bridgeversion: '3.8'
-
-x-logging: &default-logging
-  options:
-    max-size: "10m"
-    max-file: "5"
-    compress: "true"
-  driver: json-file
-
-x-shared:
-  &n8n-common
-  environment:
-    - DB_TYPE=postgresdb
-    - DB_POSTGRESDB_HOST=postgres
-    - DB_POSTGRESDB_PORT=5432
-    - DB_POSTGRESDB_DATABASE=n8n
-    - DB_POSTGRESDB_USER=n8n
-    - DB_POSTGRESDB_PASSWORD=n8n_password
-    - QUEUE_MODE=redis
-    - QUEUE_REDIS_HOST=redis
-    - QUEUE_REDIS_PORT=6379
-    - EXECUTIONS_MODE=queue
-    - N8N_ENCRYPTION_KEY=your-secure-encryption-key
-    - GENERIC_TIMEZONE=America/Sao_Paulo
-  depends_on:
-    postgres:
-      condition: service_healthy
-    redis:
-      condition: service_healthy
-  volumes:
-    - n8n_data:/home/node/.n8n
-  networks:
-    - n8n-network
-  logging: *default-logging
-
-services:
-  traefik:
-    image: traefik:v2.10
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-    ports:
-      - "80:80"
-      - "8080:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - GENERIC_TIMEZONE=America/Sao_Paulo
-    networks:
-      - n8n-network
-    logging: *default-logging
-
-  postgres:
-    image: postgres:15
-    environment:
-      - POSTGRES_USER=n8n
-      - POSTGRES_PASSWORD=n8n_password
-      - POSTGRES_DB=n8n
-      - GENERIC_TIMEZONE=America/Sao_Paulo
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - n8n-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U n8n"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    logging: *default-logging
-
-  redis:
-    image: redis:7
-    environment:
-      - GENERIC_TIMEZONE=America/Sao_Paulo
-    volumes:
-      - redis_data:/data
-    networks:
-      - n8n-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-    logging: *default-logging
-
-  n8n-master:
-    image: n8nio/n8n:latest
-    command: start
-    environment:
-      - N8N_HOST=n8n.example.com
-      - N8N_PROTOCOL=http
-      - N8N_PORT=5678
-      - WEBHOOK_URL=http://n8n.example.com/
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.n8n.rule=Host(`n8n.example.com`)"
-      - "traefik.http.routers.n8n.entrypoints=web"
-      - "traefik.http.services.n8n.loadbalancer.server.port=5678"
-    <<: *n8n-common
-
-  n8n-worker:
-    image: n8nio/n8n:latest
-    command: worker
-    <<: *n8n-common
-
-volumes:
-  postgres_data:
-  redis_data:
-  n8n_data:
+  letsencrypt_data:
 
 networks:
   n8n-network:
