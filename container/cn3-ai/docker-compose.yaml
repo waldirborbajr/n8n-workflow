@@ -14,6 +14,7 @@ x-shared:
     - QUEUE_REDIS_PORT=6379
     - EXECUTIONS_MODE=queue
     - N8N_ENCRYPTION_KEY=your-secure-encryption-key
+    - GENERIC_TIMEZONE=America/Sao_Paulo
   depends_on:
     postgres:
       condition: service_healthy
@@ -43,6 +44,8 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - GENERIC_TIMEZONE=America/Sao_Paulo
     networks:
       - n8n-network
 
@@ -52,6 +55,7 @@ services:
       - POSTGRES_USER=n8n
       - POSTGRES_PASSWORD=n8n_password
       - POSTGRES_DB=n8n
+      - GENERIC_TIMEZONE=America/Sao_Paulo
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -64,6 +68,8 @@ services:
 
   redis:
     image: redis:7
+    environment:
+      - GENERIC_TIMEZONE=America/Sao_Paulo
     volumes:
       - redis_data:/data
     networks:
