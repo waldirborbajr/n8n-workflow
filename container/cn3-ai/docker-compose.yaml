@@ -67,7 +67,7 @@ services:
       - POSTGRES_USER=n8n
       - POSTGRES_PASSWORD=n8n_password
       - POSTGRES_DB=n8n
-      - POSTGRES_MULTIPLE_DATABASES=chatwoot
+      - POSTGRES_MULTIPLE_DATABASES=chatwoot,evolution
       - GENERIC_TIMEZONE=America/Sao_Paulo
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -150,12 +150,49 @@ services:
       - "traefik.http.services.chatwoot.loadbalancer.server.port=3000"
     logging: *default-logging
 
+  evolution-api:
+    image: atendai/evolution-api:latest
+    environment:
+      - DATABASE_ENABLED=true
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CONNECTION_URI=postgresql://n8n:n8n_password@postgres:5432/evolution?schema=public
+      - DATABASE_CONNECTION_CLIENT_NAME=evolution_exchange
+      - DATABASE_SAVE_DATA_INSTANCE=true
+      - DATABASE_SAVE_DATA_NEW_MESSAGE=true
+      - DATABASE_SAVE_MESSAGE_UPDATE=true
+      - DATABASE_SAVE_DATA_CONTACTS=true
+      - DATABASE_SAVE_DATA_CHATS=true
+      - DATABASE_SAVE_DATA_LABELS=true
+      - DATABASE_SAVE_DATA_HISTORIC=true
+      - REDIS_ENABLED=true
+      - REDIS_URI=redis://redis:6379
+      - AUTHENTICATION_API_KEY=your-evolution-api-key
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - evolution_data:/evolution/instances
+    networks:
+      - n8n-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.evolution.rule=Host(`evolution.example.com`)"
+      - "traefik.http.routers.evolution.entrypoints=websecure"
+      - "traefik.http.routers.evolution.tls=true"
+      - "traefik.http.routers.evolution.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.evolution.loadbalancer.server.port=8080"
+    logging: *default-logging
+
 volumes:
   postgres_data:
   redis_data:
   n8n_data:
   letsencrypt_data:
   chatwoot_data:
+  evolution_data:
 
 networks:
   n8n-network:
