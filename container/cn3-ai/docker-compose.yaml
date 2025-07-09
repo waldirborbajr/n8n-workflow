@@ -1,14 +1,28 @@
 version: '3.8'
 
+volumes:
+  postgres_data:
+  redis_data:
+  n8n_data:
+  letsencrypt_data:
+  chatwoot_data:
+  evolution_data:
+  pgvector_data:
+
+networks:
+  n8n-network:
+    driver: bridge
+
 x-logging: &default-logging
   options:
     max-size: "10m"
     max-file: "5"
     compress: "true"
   driver: json-file
-
+  
 x-shared:
   &n8n-common
+  image: n8nio/n8n:latest
   environment:
     - DB_TYPE=postgresdb
     - DB_POSTGRESDB_HOST=postgres
@@ -20,8 +34,15 @@ x-shared:
     - QUEUE_REDIS_HOST=redis
     - QUEUE_REDIS_PORT=6379
     - EXECUTIONS_MODE=queue
-    - N8N_ENCRYPTION_KEY=your-secure-encryption-key
-    - GENERIC_TIMEZONE=America/Sao_Paulo
+    - QUEUE_BULL_REDIS_HOST=redis
+    - QUEUE_HEALTH_CHECK_ACTIVE=true
+    - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+    - N8N_ENCRYPTION_KEY=${ENCRYPTION_KEY}
+    - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
+    - N8N_SECURE_COOKIE=false
+    - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+    - N8N_RUNNERS_ENABLED=true    
+    - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=true    
   depends_on:
     postgres:
       condition: service_healthy
@@ -36,6 +57,7 @@ x-shared:
 services:
   traefik:
     image: traefik:v2.10
+    container_name: traefik
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -62,7 +84,8 @@ services:
     logging: *default-logging
 
   postgres:
-    image: postgres:15
+    image: postgres:16-alpine
+    container_name: postgres
     environment:
       - POSTGRES_USER=n8n
       - POSTGRES_PASSWORD=n8n_password
@@ -80,8 +103,28 @@ services:
       retries: 10
     logging: *default-logging
 
+  pgvector:
+    image: pgvector/pgvector:pg16
+    container_name: pgvector
+    command: -p 5433
+    ports:
+     - 5433:5433
+    restart: always
+    networks:
+      - n8n-network      
+    environment:
+      - POSTGRES_DB=vectordb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+     - ./pgvector-init.sql:/docker-entrypoint-initdb.d/init.sql
+     - pgvector_data:/var/lib/postgresql/data
+    logging: *default-logging
+
   redis:
-    image: redis:7
+    image: redis:alpine
+    container_name: redis
     environment:
       - GENERIC_TIMEZONE=America/Sao_Paulo
     volumes:
@@ -95,17 +138,33 @@ services:
       retries: 5
     logging: *default-logging
 
+  n8n-import:
+    hostname: n8n-import
+    container_name: n8n-import
+    entrypoint: /bin/sh
+    command:
+      - "-c"
+      - "n8n import:credentials --separate --input=/backup/credentials && n8n import:workflow --separate --input=/backup/workflows"
+    volumes:
+      - ./n8n/backup:/backup
+    depends_on:
+      postgres:
+        condition: service_healthy
+    <<: *n8n-common
+
   n8n-master:
-    image: n8nio/n8n:latest
+    container_name: n8n-master
     command: start
+    ports:
+      - 5678:5678    
     environment:
-      - N8N_HOST=n8n.example.com
+      - N8N_HOST=n8n.dockervm
       - N8N_PROTOCOL=http
       - N8N_PORT=5678
-      - WEBHOOK_URL=http://n8n.example.com/
+      - WEBHOOK_URL=http://n8n.dockervm/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.n8n.rule=Host(`n8n.example.com`)"
+      - "traefik.http.routers.n8n.rule=Host(`n8n.dockervm`)"
       - "traefik.http.routers.n8n.entrypoints=websecure"
       - "traefik.http.routers.n8n.tls=true"
       - "traefik.http.routers.n8n.tls.certresolver=mytlschallenge"
@@ -113,45 +172,13 @@ services:
     <<: *n8n-common
 
   n8n-worker:
-    image: n8nio/n8n:latest
+    container_name: n8n-worker
     command: worker
     <<: *n8n-common
 
-  chatwoot:
-    image: chatwoot/chatwoot:latest
-    command: bundle exec rails server -b 0.0.0.0 -p 3000
-    environment:
-      - RAILS_ENV=production
-      - REDIS_URL=redis://redis:6379
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_USERNAME=n8n
-      - POSTGRES_PASSWORD=n8n_password
-      - POSTGRES_DATABASE=chatwoot
-      - FRONTEND_URL=https://chatwoot.example.com
-      - GENERIC_TIMEZONE=America/Sao_Paulo
-      - SECRET_KEY_BASE=your-secret-key-base
-      - ACTIVE_STORAGE_SERVICE=local
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    volumes:
-      - chatwoot_data:/app/storage
-    networks:
-      - n8n-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.chatwoot.rule=Host(`chatwoot.example.com`)"
-      - "traefik.http.routers.chatwoot.entrypoints=websecure"
-      - "traefik.http.routers.chatwoot.tls=true"
-      - "traefik.http.routers.chatwoot.tls.certresolver=mytlschallenge"
-      - "traefik.http.services.chatwoot.loadbalancer.server.port=3000"
-    logging: *default-logging
-
   evolution-api:
     image: atendai/evolution-api:latest
+    container_name: evolution-api
     environment:
       - DATABASE_ENABLED=true
       - DATABASE_PROVIDER=postgresql
@@ -179,21 +206,44 @@ services:
       - n8n-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.evolution.rule=Host(`evolution.example.com`)"
+      - "traefik.http.routers.evolution.rule=Host(`evolution.dockervm`)"
       - "traefik.http.routers.evolution.entrypoints=websecure"
       - "traefik.http.routers.evolution.tls=true"
       - "traefik.http.routers.evolution.tls.certresolver=mytlschallenge"
       - "traefik.http.services.evolution.loadbalancer.server.port=8080"
-    logging: *default-logging
+    logging: *default-logging 
 
-volumes:
-  postgres_data:
-  redis_data:
-  n8n_data:
-  letsencrypt_data:
-  chatwoot_data:
-  evolution_data:
+  # chatwoot:
+  #   image: chatwoot/chatwoot:latest
+  #   container_name: chatwoot
+  #   command: bundle exec rails server -b 0.0.0.0 -p 3000
+  #   environment:
+  #     - RAILS_ENV=production
+  #     - REDIS_URL=redis://redis:6379
+  #     - POSTGRES_HOST=postgres
+  #     - POSTGRES_PORT=5432
+  #     - POSTGRES_USERNAME=n8n
+  #     - POSTGRES_PASSWORD=n8n_password
+  #     - POSTGRES_DATABASE=chatwoot
+  #     - FRONTEND_URL=https://chatwoot.example.com
+  #     - GENERIC_TIMEZONE=America/Sao_Paulo
+  #     - SECRET_KEY_BASE=your-secret-key-base
+  #     - ACTIVE_STORAGE_SERVICE=local
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #   volumes:
+  #     - chatwoot_data:/app/storage
+  #   networks:
+  #     - n8n-network
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.chatwoot.rule=Host(`chatwoot.example.com`)"
+  #     - "traefik.http.routers.chatwoot.entrypoints=websecure"
+  #     - "traefik.http.routers.chatwoot.tls=true"
+  #     - "traefik.http.routers.chatwoot.tls.certresolver=mytlschallenge"
+  #     - "traefik.http.services.chatwoot.loadbalancer.server.port=3000"
+  #   logging: *defaultlocking
 
-networks:
-  n8n-network:
-    driver: bridge
