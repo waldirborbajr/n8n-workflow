@@ -8,10 +8,13 @@ if [ -z "$ADDR" ]; then
   exit 1
 fi
 
-docker volume create n8n_storage
-docker volume create db_storage
-docker volume create traefik_storage
-docker volume create baserow_storage
+docker volume create   postgres_data
+docker volume create   redis_data
+docker volume create   n8n_data
+docker volume create   letsencrypt_data
+docker volume create   chatwoot_data
+docker volume create   evolution_data
+docker volume create   pgvector_data
 
 sed -i "s/^N8N_HOST=.*/N8N_HOST=$ADDR/" .env
 
