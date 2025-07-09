@@ -43,7 +43,6 @@ x-shared:
     - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
     - N8N_SECURE_COOKIE=false
     - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-    - N8N_RUNNERS_ENABLED=true    
     - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=true
     - WEBHOOK_URL=https://${N8N_HOST}  
     - N8N_QUEUE_TYPE=redis
@@ -52,6 +51,7 @@ x-shared:
     - N8N_QUEUE_NAME=n8n
     - N8N_COMMUNITY_PACKAGES_ENABLED=true
     - N8N_REINSTALL_MISSING_PACKAGES=true
+    - N8N_RUNNERS_ENABLED=true
   depends_on:
     postgres:
       condition: service_healthy
@@ -167,11 +167,6 @@ services:
     command: start
     ports:
       - 5678:5678    
-    environment:
-      - N8N_HOST=n8n.dockervm
-      - N8N_PROTOCOL=http
-      - N8N_PORT=5678
-      - WEBHOOK_URL=http://n8n.dockervm/
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.n8n.rule=Host(`n8n.dockervm`)"
