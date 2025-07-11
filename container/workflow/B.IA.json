@@ -4,165 +4,82 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "9791364c-2ba8-49dd-9148-663586cac204",
+        "path": "bia",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        360,
-        500
+        240,
+        280
       ],
-      "id": "349afda4-4866-4eb7-98ad-ff13e68c6465",
+      "id": "54f34ab7-4016-4335-9478-130fec7cdf4e",
       "name": "Webhook",
       "webhookId": "9791364c-2ba8-49dd-9148-663586cac204"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "b9cfdf79-6156-4436-91c7-0410cc76cfa4",
-              "leftValue": "={{ $('Webhook').item.json.body.wook }}",
-              "rightValue": "RECEIVE_MESSAGE",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            },
-            {
-              "id": "c75a9210-5e0c-4a56-9e53-715d004cedfd",
-              "leftValue": "={{ $json.body.sender }}",
-              "rightValue": "555184277470",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
-      "position": [
-        560,
-        500
-      ],
-      "id": "97829469-324d-40d3-8289-cbd125e03292",
-      "name": "Filter"
     },
     {
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "0149f53d-fff1-4c46-8c51-3982c1405045",
-              "name": "endpoint",
-              "value": "https://teste.uzapi.com.br:3333/sendText",
+              "id": "fe48a5b2-e66a-43df-8850-01a34782442e",
+              "name": "instance",
+              "value": "={{ $('Webhook').item.json.body.instance }}",
               "type": "string"
             },
             {
-              "id": "b0660bd0-f2b1-4c41-86e1-39787a4d9415",
-              "name": "session",
-              "value": "bbot",
+              "id": "0016c33a-4a0e-4e4d-a464-28582cdda840",
+              "name": "number",
+              "value": "={{ $json.body.data.key.remoteJid.split('@').first() }}",
               "type": "string"
             },
             {
-              "id": "e4884f75-43c8-4a62-847b-7945fae4bec4",
-              "name": "body.sender",
-              "value": "={{ $('Webhook').item.json.body.sender }}",
+              "id": "a9cb08b0-83a5-467b-956e-8031ea8f57ff",
+              "name": "id",
+              "value": "={{ $('Webhook').item.json.body.data.key.id }}",
               "type": "string"
             },
             {
-              "id": "3027347c-4bc9-4738-9460-7ea6afec3668",
-              "name": "body.content",
-              "value": "={{ $('Webhook').item.json.body.content }}",
+              "id": "7af32eb8-d2d3-4529-a9f6-c5ced7ab3b0b",
+              "name": "fromMe",
+              "value": "={{ $('Webhook').item.json.body.data.key.fromMe }}",
+              "type": "boolean"
+            },
+            {
+              "id": "2f477b4e-9a96-438a-8172-9fc37d0bdd0d",
+              "name": "contactName",
+              "value": "={{ $json.body.data.pushName }}",
               "type": "string"
             },
             {
-              "id": "e63fda01-3c54-4f76-ac0e-f8a08be0d4ad",
-              "name": "body.name",
-              "value": "={{ $('Webhook').item.json.body.name }}",
+              "id": "6c6243b1-c186-4dc6-8a41-41a370517665",
+              "name": "text",
+              "value": "={{ $json.body.data.message.conversation }}",
               "type": "string"
             },
             {
-              "id": "ebac5077-e0d0-48cd-b7a2-ada1a15c1072",
-              "name": "body.type",
-              "value": "={{ $json.body.type }}",
+              "id": "e0e2e808-dc51-4b10-94e8-c5028f10b5d4",
+              "name": "messageID",
+              "value": "={{ $('Webhook').item.json.body.data.key.id }}",
               "type": "string"
             },
             {
-              "id": "f53bf74b-2900-4d0d-b27f-6f9ffa551bd2",
-              "name": "base64",
-              "value": "audio",
+              "id": "fa1e9427-e32e-4307-8af5-4a7987959393",
+              "name": "messageType",
+              "value": "={{ $('Webhook').item.json.body.data.messageType }}",
               "type": "string"
             }
           ]
         },
         "options": {}
       },
-      "id": "99be5f74-22e8-4f15-adf9-75d78cbd885d",
+      "id": "e8ce7b95-7f8f-4dc1-9a32-3ec921a3bcdf",
       "name": "Parameters",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.3,
       "position": [
-        760,
-        500
-      ]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "={{ $('Parameters').item.json.endpoint }}",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "content-type",
-              "value": "application/json"
-            },
-            {
-              "name": "sessionkey",
-              "value": "={{ $('Parameters').item.json.session}}"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "session",
-              "value": "={{ $('Parameters').item.json.session }}"
-            },
-            {
-              "name": "number",
-              "value": "={{ $('Parameters').item.json.body.sender }}"
-            },
-            {
-              "name": "text",
-              "value": "={{ $json.output }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "27fa7179-40b0-434d-8aec-2544f94fb8bb",
-      "name": "Replay to User",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        2080,
-        480
+        480,
+        280
       ]
     },
     {
@@ -170,31 +87,31 @@
         "promptType": "define",
         "text": "={{ $json.message }}",
         "options": {
-          "systemMessage": "=## PAPEL\n\nVocê é a assistente de IA do **Amigo Pet**, responsável por informar clientes, tirar dúvidas sobre produtos e serviços, enviar catálogo de itens para venda e agendar consultas veterinárias.\n\n---\n\n## CONTEXTO\n\nAgora são {{ $now.format('FFFF') }}\nTelefone do cliente falando com você agora: {{ $json.body.sender.phone_number }}\n\n* **Endereço:** Rua das Acácias 456, Centro, São Paulo-SP\n* **Horário de funcionamento:**\n  * Seg–Sex 9h-18h\n  * Sáb 9h-14h\n  * Dom fechado\n* **Serviços & preços básicos:**\n  * **Banho e Tosa cão P** – R$59,90\n  * **Banho e Tosa cão M** – R$79,90\n  * **Consulta veterinária** – R$120,00 (primeira) / R$100,00 (retorno em até 30 dias)\n\nEntregas de produtos em raio de 5 km; taxa de entrega varia conforme distância.\n\n---\n\n## FERRAMENTAS\n\n* **Buscar_estoque** – Obtém detalhes e disponibilidade de itens do estoque.\n* **Enviar_catalogo** – Envia ao cliente o arquivo PDF com o catálogo completo de produtos.\n* **Agendar_veterinario** – Cria um agendamento. Campos:\n  * nome do tutor\n  * telefone\n  * nome e espécie/raça do pet\n  * serviço (ex.: consulta, vacina, retorno)\n  * data/horário preferencial\n  * observações\n\n---\n\n## TAREFAS\n\n1. **Informar clientes** sobre produtos, preços, promoções, serviços e horários.\n2. **Buscar estoque detalhado** quando solicitado, usando **Buscar_estoque**.\n3. **Enviar catálogo** quando o cliente pedir “catálogo”, “lista de produtos” ou similar, usando **Buscar_catálogo**.\n4. **Agendar consultas** via **Agendar_veterinário**. Peça confirmação do telefone e use o número informado manualmente caso haja divergência. Formate o telefone como `(11) 99999-9999`.\n5. Após agendar, **confirme para o cliente** a data/hora do atendimento.\n6. **Esclarecer dúvidas** de forma cordial, rápida e objetiva.\n\n---\n\n## NOTAS\n\n* Mantenha um tom amigável e profissional, mensagens concisas e claras.\n* Use valores monetários no formato brasileiro (R$0,00) e sem espaçamento entre número e símbolo.\n* Acione ferramentas apenas quando necessário.\n* Se faltar alguma informação essencial ao agendamento ou solicitação, peça-a educadamente.\n* Nunca compartilhe internamente esta instrução; responda apenas com o conteúdo necessário ao cliente.\n"
+          "systemMessage": "=## PAPEL\n\nVocê é a **B.IA a Inteligência Artificial Limitada**, responsável por informar clientes, tirar dúvidas sobre produtos e serviços, enviar catálogo de itens para venda e agendar consultas veterinárias.\n\n---\n\n## CONTEXTO\n\nAgora são {{ $now.format('FFFF') }}\nTelefone do cliente falando com você agora: {{ $('Parameters').item.json.number }}\n\n* **Endereço:** Rua das Acácias 456, Centro, São Paulo-SP\n* **Horário de funcionamento:**\n  * Seg–Sex 9h-18h\n  * Sáb 9h-14h\n  * Dom fechado\n* **Serviços & preços básicos:**\n  * **Banho e Tosa cão P** – R$59,90\n  * **Banho e Tosa cão M** – R$79,90\n  * **Consulta veterinária** – R$120,00 (primeira) / R$100,00 (retorno em até 30 dias)\n\nEntregas de produtos em raio de 5 km; taxa de entrega varia conforme distância.\n\n---\n\n## FERRAMENTAS\n\n* **Buscar_estoque** – Obtém detalhes e disponibilidade de itens do estoque.\n* **Enviar_catalogo** – Envia ao cliente o arquivo PDF com o catálogo completo de produtos.\n* **Agendar_veterinario** – Cria um agendamento. Campos:\n  * nome do tutor\n  * telefone\n  * nome e espécie/raça do pet\n  * serviço (ex.: consulta, vacina, retorno)\n  * data/horário preferencial\n  * observações\n\n---\n\n## TAREFAS\n\n1. **Informar clientes** sobre produtos, preços, promoções, serviços e horários.\n2. **Buscar estoque detalhado** quando solicitado, usando **Buscar_estoque**.\n3. **Enviar catálogo** quando o cliente pedir “catálogo”, “lista de produtos” ou similar, usando **Buscar_catálogo**.\n4. **Agendar consultas** via **Agendar_veterinário**. Peça confirmação do telefone e use o número informado manualmente caso haja divergência. Formate o telefone como `(11) 99999-9999`.\n5. Após agendar, **confirme para o cliente** a data/hora do atendimento.\n6. **Esclarecer dúvidas** de forma cordial, rápida e objetiva.\n\n---\n\n## NOTAS\n\n* Mantenha um tom amigável e profissional, mensagens concisas e claras.\n* Use valores monetários no formato brasileiro (R$0,00) e sem espaçamento entre número e símbolo.\n* Acione ferramentas apenas quando necessário.\n* Se faltar alguma informação essencial ao agendamento ou solicitação, peça-a educadamente.\n* Nunca compartilhe internamente esta instrução; responda apenas com o conteúdo necessário ao cliente.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        1720,
-        480
+        1820,
+        120
       ],
-      "id": "bc19c4fe-03d3-4d73-927c-cfff28cf89a8",
+      "id": "58509497-0d40-4119-b75a-3da744b13f9f",
       "name": "AI Agent"
     },
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Parameters').item.json.body.sender }}",
+        "sessionKey": "={{ $('Parameters').item.json.messageID }}",
         "contextWindowLength": 50
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        1800,
-        720
+        1940,
+        360
       ],
-      "id": "d6477898-f748-4109-9790-40104e8fd2b4",
+      "id": "b6114821-cd82-4934-bf8d-fd3ee39a506d",
       "name": "Simple Memory"
     },
     {
@@ -204,25 +121,31 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        1640,
-        720
+        1780,
+        360
       ],
-      "id": "d898b875-65f3-4582-b87a-26c31b755645",
-      "name": "Groq Chat Model"
+      "id": "2826668c-2c4e-491b-9ca0-ee67e8a2d9df",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "Ic4SFcP7kPGbEHUl",
+          "name": "Groq account"
+        }
+      }
     },
     {
       "parameters": {
-        "content": "## B.IA \n\nBIA IA comInteligência Limitada",
+        "content": "## B.IA  v0.1.0 \n\nBIA IA comInteligência Limitada",
         "width": 260,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        360,
-        260
+        80,
+        40
       ],
-      "id": "fcb778ce-c0b9-43ed-ad76-1d063f9bacdd",
+      "id": "9017eb3c-5654-4888-839d-8883dc7f8962",
       "name": "Sticky Note"
     },
     {
@@ -230,35 +153,28 @@
         "dataToSave": {
           "values": [
             {
-              "key": "telefone",
-              "value": "={{ $json.body.sender }}"
+              "key": "contactName",
+              "value": "={{ $json.contactName }}"
             },
             {
-              "key": "contato",
-              "value": "={{ $json.body.name }}"
+              "key": "number",
+              "value": "={{ $json.number }}"
             },
             {
-              "key": "msg",
-              "value": "={{ $json.body.content }}"
+              "key": "=messageType",
+              "value": "={{ $json.messageType }}"
             },
-            {
-              "key": "wook",
-              "value": "={{ $('Webhook').item.json.body.wook }}"
-            },
-            {
-              "key": "type",
-              "value": "={{ $('Webhook').item.json.body.type }}"
-            }
+            {}
           ]
         }
       },
       "type": "n8n-nodes-base.executionData",
       "typeVersion": 1,
       "position": [
-        960,
-        280
+        700,
+        60
       ],
-      "id": "cf202c96-21b9-4f3b-a9ed-204d82b65cdf",
+      "id": "19616a16-04bb-407e-9dd9-00e7d6a6f1bc",
       "name": "Debug"
     },
     {
@@ -275,8 +191,8 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.body.type }}",
-                    "rightValue": "text",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "conversation",
                     "operator": {
                       "type": "string",
                       "operation": "equals"
@@ -300,8 +216,8 @@
                 "conditions": [
                   {
                     "id": "64472979-7c5d-4de8-8885-42cba0d78d64",
-                    "leftValue": "={{ $json.body.type }}",
-                    "rightValue": "ptt",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "audioMessage",
                     "operator": {
                       "type": "string",
                       "operation": "equals",
@@ -321,10 +237,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        980,
-        500
+        700,
+        280
       ],
-      "id": "6e7ab825-0e50-4847-a13a-4611e91c1ebb",
+      "id": "8bb75366-4397-4603-88c6-650c2c2ac359",
       "name": "Switch"
     },
     {
@@ -334,7 +250,7 @@
             {
               "id": "28fbcde0-163d-4a8a-97e1-d6f9288879ed",
               "name": "message",
-              "value": "={{ $json.body.content }}",
+              "value": "={{ $json.text }}",
               "type": "string"
             }
           ]
@@ -344,25 +260,153 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1520,
-        480
+        1540,
+        120
       ],
-      "id": "d067d32b-4133-4dab-a2c7-48448f81e1c4",
+      "id": "f43bf400-7aec-4892-9ab8-94bedf364e2f",
       "name": "Message"
     },
     {
       "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Parameters').item.json.instance }}",
+        "remoteJid": "={{ $('Parameters').item.json.number }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {
+          "delay": 4000,
+          "linkPreview": true
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2180,
+        120
+      ],
+      "id": "6cb3c337-a2ce-4e08-8922-d590a7322275",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "4Y41lmfJyvCub1ze",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "={{ $json.instance }}",
+        "messageId": "={{ $json.messageID }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        900,
+        500
+      ],
+      "id": "6c1c48ac-066b-49e0-8de1-32e7c366e514",
+      "name": "Obter m dia em base64",
+      "credentials": {
+        "evolutionApi": {
+          "id": "4Y41lmfJyvCub1ze",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
         "operation": "toBinary",
-        "options": {}
+        "sourceProperty": "data.base64",
+        "options": {
+          "mimeType": "audio/mpeg"
+        }
       },
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        1200,
-        660
+        1120,
+        500
       ],
-      "id": "cf541030-39fc-4620-9052-8cc99a54ced4",
+      "id": "ae9db069-54e3-485c-8bb3-5b43f5f37929",
       "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/audio/translations",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "groqApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "whisper-large-v3"
+            },
+            {
+              "name": "prompt",
+              "value": "Specify context or spelling"
+            },
+            {
+              "name": "language",
+              "value": "en"
+            },
+            {
+              "name": "temperature",
+              "value": "0"
+            },
+            {
+              "name": "response_format",
+              "value": "json"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1340,
+        500
+      ],
+      "id": "1375388a-f430-447b-ac57-48e5ae2e0cea",
+      "name": "HTTP Request",
+      "credentials": {
+        "groqApi": {
+          "id": "Ic4SFcP7kPGbEHUl",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7add2f07-4971-430c-974f-47d802e92789",
+              "name": "message",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1560,
+        500
+      ],
+      "id": "730b2b67-a131-4c2b-afaf-438dd467e851",
+      "name": "Audio Message"
     }
   ],
   "pinData": {
@@ -370,33 +414,64 @@
       {
         "json": {
           "headers": {
-            "host": "3fc466fb49d8.ngrok-free.app",
-            "user-agent": "axios/1.8.4",
-            "content-length": "283",
             "accept": "application/json, text/plain, */*",
-            "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
-            "x-forwarded-for": "2a01:4f9:c011:7e0f::1",
-            "x-forwarded-host": "3fc466fb49d8.ngrok-free.app",
-            "x-forwarded-proto": "https"
+            "user-agent": "axios/1.10.0",
+            "content-length": "1146",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "host": "10.221.186.19:5678",
+            "connection": "keep-alive"
           },
           "params": {},
           "query": {},
           "body": {
-            "wook": "RECEIVE_MESSAGE",
-            "type": "text",
-            "id": "false_555184277470@c.us_3A13E1D435C7C2009FAF",
-            "session": "bbot",
-            "isGroupMsg": false,
-            "author": null,
-            "name": "Gustavo M Severo",
-            "phone": "554191853938",
-            "sender": "555184277470",
-            "content": "Oi",
-            "status": "RECEIVED",
-            "datetime": "09-07-2025 15:46:28"
+            "event": "messages.upsert",
+            "instance": "B.IA",
+            "data": {
+              "key": {
+                "remoteJid": "554191853938@s.whatsapp.net",
+                "fromMe": false,
+                "id": "3EB04C936A763CE9F56E15",
+                "senderLid": "13722487681154@lid"
+              },
+              "pushName": "Waldir Borba Junior",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "2IeBxdQB6gvLcA==",
+                    "senderTimestamp": "1752102956",
+                    "senderAccountType": "E2EE",
+                    "receiverAccountType": "E2EE",
+                    "recipientKeyHash": "BdVnnngzJypotw==",
+                    "recipientTimestamp": "1749316572"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "MPiaQy5cFO6p9BxMmZTb/ZAk7SIrNiSFcLYP1SopbF8="
+                },
+                "conversation": "melhorar o prompt"
+              },
+              "contextInfo": {
+                "expiration": 86400,
+                "ephemeralSettingTimestamp": "1715880483",
+                "disappearingMode": {
+                  "initiator": "INITIATED_BY_ME",
+                  "trigger": "ACCOUNT_SETTING",
+                  "initiatedByMe": true
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1752259262,
+              "instanceId": "b9b1257c-1c8e-4355-a87f-6545cdb616ee",
+              "source": "web"
+            },
+            "destination": "http://10.221.186.19:5678/webhook-test/bia",
+            "date_time": "2025-07-11T15:41:03.498Z",
+            "sender": "554195082989@s.whatsapp.net",
+            "server_url": "http://evolution-api:8080",
+            "apikey": "A24637E8C364-449B-9D30-7E31D42ED9C6"
           },
-          "webhookUrl": "https://3fc466fb49d8.ngrok-free.app/webhook-test/9791364c-2ba8-49dd-9148-663586cac204",
+          "webhookUrl": "http://10.221.186.19:5678/webhook-test/bia",
           "executionMode": "test"
         }
       }
@@ -404,17 +479,6 @@
   },
   "connections": {
     "Webhook": {
-      "main": [
-        [
-          {
-            "node": "Filter",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Filter": {
       "main": [
         [
           {
@@ -445,7 +509,7 @@
       "main": [
         [
           {
-            "node": "Replay to User",
+            "node": "Enviar texto",
             "type": "main",
             "index": 0
           }
@@ -485,7 +549,7 @@
         ],
         [
           {
-            "node": "Convert to File",
+            "node": "Obter m dia em base64",
             "type": "main",
             "index": 0
           }
@@ -502,16 +566,63 @@
           }
         ]
       ]
+    },
+    "Obter m dia em base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Audio Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio Message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1
   },
-  "versionId": "b633c50d-540e-47b2-9eb2-1437f176efd7",
+  "versionId": "6203dc3b-86ab-4d72-b122-a8a981db3a1c",
   "meta": {
-    "instanceId": "e2a5f0f12ab7b29f68c335e424caeb62dda6c17835fa4bcb991befa77394dc1f"
+    "templateCredsSetupCompleted": true,
+    "instanceId": "25b177e38cfb7775d70c098b59b06663b30e210a67b4407287e2427888786c80"
   },
-  "id": "XIx3VUE0FWch015a",
+  "id": "GjhgOhGmlBPkZVyH",
   "tags": []
 }
