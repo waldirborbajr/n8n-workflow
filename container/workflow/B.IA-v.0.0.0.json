@@ -1,0 +1,385 @@
+{
+  "name": "AtendImento",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9791364c-2ba8-49dd-9148-663586cac204",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "245afc8e-89d2-4537-b306-f83ef55dde0d",
+      "name": "Webhook",
+      "webhookId": "9791364c-2ba8-49dd-9148-663586cac204"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b9cfdf79-6156-4436-91c7-0410cc76cfa4",
+              "leftValue": "={{ $('Webhook').item.json.body.wook }}",
+              "rightValue": "RECEIVE_MESSAGE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "c75a9210-5e0c-4a56-9e53-715d004cedfd",
+              "leftValue": "={{ $json.body.sender }}",
+              "rightValue": "555184277470",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        200,
+        0
+      ],
+      "id": "0b86f2d4-c5aa-4e30-841f-0d14b653649a",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0149f53d-fff1-4c46-8c51-3982c1405045",
+              "name": "endpoint",
+              "value": "https://teste.uzapi.com.br:3333/sendText",
+              "type": "string"
+            },
+            {
+              "id": "b0660bd0-f2b1-4c41-86e1-39787a4d9415",
+              "name": "session",
+              "value": "bbot",
+              "type": "string"
+            },
+            {
+              "id": "e4884f75-43c8-4a62-847b-7945fae4bec4",
+              "name": "body.sender",
+              "value": "={{ $('Webhook').item.json.body.sender }}",
+              "type": "string"
+            },
+            {
+              "id": "3027347c-4bc9-4738-9460-7ea6afec3668",
+              "name": "body.content",
+              "value": "={{ $('Webhook').item.json.body.content }}",
+              "type": "string"
+            },
+            {
+              "id": "e63fda01-3c54-4f76-ac0e-f8a08be0d4ad",
+              "name": "body.name",
+              "value": "={{ $('Webhook').item.json.body.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1930df8d-e430-4bb3-9510-bbb95fbedd97",
+      "name": "Parameters",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        400,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Parameters').item.json.endpoint }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            },
+            {
+              "name": "sessionkey",
+              "value": "={{ $('Parameters').item.json.session}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "session",
+              "value": "={{ $('Parameters').item.json.session }}"
+            },
+            {
+              "name": "number",
+              "value": "={{ $('Parameters').item.json.body.sender }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e40acbbe-5f60-4dd5-987e-60461603618b",
+      "name": "Replay to User",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.content }}",
+        "options": {
+          "systemMessage": "=Voce vai ser minha secretária, de nome BIA, a IA de Inteligência Limitada. \n\nSua função é verificar o que a pessoa que entrou em contato comigo deseja.\n\nInicie a resposta chamando o contato pelo seu nome {{ $json.body.name }}\n\nSe for algo importante, avise que falarei em seguida. Caso não seja importatante avise que entrarei em contato  somente em horas pares, emplo: 14:00, 16:00, 18:00 e assim sucessivamente. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        600,
+        0
+      ],
+      "id": "b319ecfb-c42c-422e-b3bf-3dde32cb1a09",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Parameters').item.json.body.sender }}",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        680,
+        220
+      ],
+      "id": "ca7903ae-a551-4115-9d75-1a6322b2e062",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        520,
+        220
+      ],
+      "id": "2c66c21c-b005-4ae9-b47e-5e9710c446b0",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "r8by8hzyrpM03vIZ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "telefone",
+              "value": "={{ $json.body.sender }}"
+            },
+            {
+              "key": "contato",
+              "value": "={{ $json.body.name }}"
+            },
+            {
+              "key": "msg",
+              "value": "={{ $json.body.content }}"
+            },
+            {
+              "key": "wook",
+              "value": "={{ $('Webhook').item.json.body.wook }}"
+            },
+            {
+              "key": "type",
+              "value": "={{ $('Webhook').item.json.body.type }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1,
+      "position": [
+        600,
+        -220
+      ],
+      "id": "bc1810eb-fe37-4983-99b7-04d1e6c2b6b2",
+      "name": "Execution Data"
+    },
+    {
+      "parameters": {
+        "content": "## AtendImento \n\nBIA IA comInteligência Limitada",
+        "width": 260,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -240
+      ],
+      "id": "65360aa9-169b-45d2-aae0-89851fd47117",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "3fc466fb49d8.ngrok-free.app",
+            "user-agent": "axios/1.8.4",
+            "content-length": "283",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "2a01:4f9:c011:7e0f::1",
+            "x-forwarded-host": "3fc466fb49d8.ngrok-free.app",
+            "x-forwarded-proto": "https"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "wook": "RECEIVE_MESSAGE",
+            "type": "text",
+            "id": "false_555184277470@c.us_3A13E1D435C7C2009FAF",
+            "session": "bbot",
+            "isGroupMsg": false,
+            "author": null,
+            "name": "Gustavo M Severo",
+            "phone": "554191853938",
+            "sender": "555184277470",
+            "content": "Oi",
+            "status": "RECEIVED",
+            "datetime": "09-07-2025 15:46:28"
+          },
+          "webhookUrl": "https://3fc466fb49d8.ngrok-free.app/webhook-test/9791364c-2ba8-49dd-9148-663586cac204",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Parameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parameters": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execution Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replay to User": {
+      "main": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Replay to User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "07aad9c5-f6b4-4886-845c-e8da508e7b27",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "25b177e38cfb7775d70c098b59b06663b30e210a67b4407287e2427888786c80"
+  },
+  "id": "pwLQ9lZabgyeUtf7",
+  "tags": []
+}
