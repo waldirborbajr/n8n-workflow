@@ -120,35 +120,6 @@
     },
     {
       "parameters": {
-        "dataToSave": {
-          "values": [
-            {
-              "key": "contactName",
-              "value": "={{ $json.contactName }}"
-            },
-            {
-              "key": "number",
-              "value": "={{ $json.number }}"
-            },
-            {
-              "key": "=messageType",
-              "value": "={{ $json.messageType }}"
-            },
-            {}
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.executionData",
-      "typeVersion": 1,
-      "position": [
-        -1060,
-        -260
-      ],
-      "id": "bb820067-8cf6-4392-90cc-afe6d95c0071",
-      "name": "Debug"
-    },
-    {
-      "parameters": {
         "rules": {
           "values": [
             {
@@ -825,6 +796,55 @@
       "typeVersion": 1,
       "id": "60ff56cb-43cd-424d-85ad-4b092dc4483c",
       "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "contactName",
+              "value": "={{ $json.contactName }}"
+            },
+            {
+              "key": "number",
+              "value": "={{ $json.number }}"
+            },
+            {
+              "key": "=messageType",
+              "value": "={{ $json.messageType }}"
+            },
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1,
+      "position": [
+        -1060,
+        -260
+      ],
+      "id": "bb820067-8cf6-4392-90cc-afe6d95c0071",
+      "name": "Debug Parameter"
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "lastMessage",
+              "value": "={{ $json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1.1,
+      "position": [
+        1880,
+        380
+      ],
+      "id": "14ff5e82-eea7-4bbb-85c8-dc5eaedb6ffb",
+      "name": "Execution Data"
     }
   ],
   "pinData": {},
@@ -833,7 +853,7 @@
       "main": [
         [
           {
-            "node": "Debug",
+            "node": "Debug Parameter",
             "type": "main",
             "index": 0
           },
@@ -1086,6 +1106,11 @@
             "node": "AI Agent",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Execution Data",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -1106,7 +1131,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "369d9320-7945-4541-bb9f-efc9c97c23ae",
+  "versionId": "4a8b7511-349a-46d7-a0d7-e68b0e2f8d9c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "105e143b495f662d62186030faaad95b07fbc5f8a45f15ace980187aab0b55c0"
