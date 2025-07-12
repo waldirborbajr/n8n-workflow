@@ -552,8 +552,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryManager",
       "typeVersion": 1.1,
       "position": [
-        660,
-        -320
+        880,
+        -340
       ],
       "id": "821fc586-fcd4-4ca0-bafb-327de8cc4fe9",
       "name": "From AI"
@@ -745,6 +745,40 @@
       "typeVersion": 1,
       "id": "fcd90669-2d0f-4b06-b63b-f891fcfd5e80",
       "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "13873a24-639e-4d3b-b625-1dfb70235ee6",
+              "leftValue": "={{ $json.messages.last() }}",
+              "rightValue": "={{ $('Message').item.json.message }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1400,
+        320
+      ],
+      "id": "10a7e57b-f316-48cc-b789-fcabf3b5aceb",
+      "name": "Filter"
     }
   ],
   "pinData": {
@@ -754,7 +788,7 @@
           "headers": {
             "host": "bia-n8n.fexiid.easypanel.host",
             "user-agent": "axios/1.10.0",
-            "content-length": "1122",
+            "content-length": "1124",
             "accept": "application/json, text/plain, */*",
             "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
@@ -774,7 +808,7 @@
               "key": {
                 "remoteJid": "554191853938@s.whatsapp.net",
                 "fromMe": false,
-                "id": "F38A48820FC8E7CD5EEB82A59E91EDE0",
+                "id": "E9D6374910EA161219E75B0AB214E440",
                 "senderLid": "13722487681154@lid"
               },
               "pushName": "Waldir Borba Junior",
@@ -788,9 +822,9 @@
                     "recipientTimestamp": "1752346523"
                   },
                   "deviceListMetadataVersion": 2,
-                  "messageSecret": "2wtSYk/Ac6cVRF7BF/h2DlXem63ij5dUlNz5tyy5F7E="
+                  "messageSecret": "5KFPGFMaXL+6OaU/EM97d2nbyjdzPvx2zLY3p224MEI="
                 },
-                "conversation": "O"
+                "conversation": "Ola"
               },
               "contextInfo": {
                 "expiration": 86400,
@@ -802,12 +836,12 @@
                 }
               },
               "messageType": "conversation",
-              "messageTimestamp": 1752350158,
+              "messageTimestamp": 1752352278,
               "instanceId": "15b905e2-7243-4fbf-a7ae-5c81f5d4717d",
               "source": "android"
             },
             "destination": "https://bia-n8n.fexiid.easypanel.host/webhook-test/bia",
-            "date_time": "2025-07-12T16:55:59.101Z",
+            "date_time": "2025-07-12T17:31:18.703Z",
             "sender": "554195082989@s.whatsapp.net",
             "server_url": "https://bia-evolution-api.fexiid.easypanel.host",
             "apikey": "C796EF272144-4C2F-A6CA-AC95984CFE54"
@@ -1033,13 +1067,7 @@
     },
     "If2": {
       "main": [
-        [
-          {
-            "node": "Delete Buffer",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Add to Buffer": {
@@ -1057,7 +1085,7 @@
       "main": [
         [
           {
-            "node": "If2",
+            "node": "Filter",
             "type": "main",
             "index": 0
           }
@@ -1085,13 +1113,24 @@
           }
         ]
       ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Delete Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "4f1f0cdb-93fc-4e95-975c-77b7b0e6a59c",
+  "versionId": "c9d27609-c85d-40fd-9391-c49cb0fb3378",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "105e143b495f662d62186030faaad95b07fbc5f8a45f15ace980187aab0b55c0"
