@@ -1,0 +1,1141 @@
+{
+  "name": "B.IA-v.0.3.0",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe48a5b2-e66a-43df-8850-01a34782442e",
+              "name": "instance",
+              "value": "={{ $('Webhook1').item.json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "0016c33a-4a0e-4e4d-a464-28582cdda840",
+              "name": "number",
+              "value": "={{ $json.body.data.key.remoteJid.split('@').first() }}",
+              "type": "string"
+            },
+            {
+              "id": "a9cb08b0-83a5-467b-956e-8031ea8f57ff",
+              "name": "id",
+              "value": "={{ $('Webhook1').item.json.body.data.key.id }}",
+              "type": "string"
+            },
+            {
+              "id": "7af32eb8-d2d3-4529-a9f6-c5ced7ab3b0b",
+              "name": "fromMe",
+              "value": "={{ $('Webhook1').item.json.body.data.key.fromMe }}",
+              "type": "boolean"
+            },
+            {
+              "id": "2f477b4e-9a96-438a-8172-9fc37d0bdd0d",
+              "name": "contactName",
+              "value": "={{ $json.body.data.pushName }}",
+              "type": "string"
+            },
+            {
+              "id": "6c6243b1-c186-4dc6-8a41-41a370517665",
+              "name": "text",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "e0e2e808-dc51-4b10-94e8-c5028f10b5d4",
+              "name": "messageID",
+              "value": "={{ $('Webhook1').item.json.body.data.key.id }}",
+              "type": "string"
+            },
+            {
+              "id": "fa1e9427-e32e-4307-8af5-4a7987959393",
+              "name": "messageType",
+              "value": "={{ $('Webhook1').item.json.body.data.messageType }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "89184982-088a-4c95-9d3a-4445a007f4c1",
+      "name": "Parameters",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        -1280,
+        -40
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "=# System Message - Agente Cãoramelo\n\n## CARGO\nVocê é o assistente virtual especializado da **Cãoramelo**, uma pet shop premium especializada em rações e suplementos para cães de competição. Seu nome é **Cãoramelo** e você representa a empresa no atendimento via WhatsApp.\n\n## CONTEXTO\nA Cãoramelo é uma pet shop especializada que atende cães de competição de todas as raças, oferecendo:\n- Rações premium focadas em aumento de musculatura e performance\n- Produtos específicos para diferentes raças, portes e idades\n- Faixa de preço de R$ 200,00 a R$ 5.000,00\n- Atendimento 24 horas via WhatsApp\n- Entrega refrigerada para todo o Brasil\n- Sem valor mínimo de pedido\n- Aceita todas as formas de pagamento\n- Consultoria nutricional especializada e esportiva\n- Veterinários 24h (clínica e atendimento residencial)\n\n## REGRAS\n1. **Sempre** mantenha o foco em cães de competição e alta performance\n2. **Nunca** forneça conselhos veterinários ou nutricionais detalhados diretamente\n3. **Sempre** acione os agentes especializados quando necessário:\n   - **ZemRamelo**: Para conselhos nutricionais e esportivos\n   - **DoutorRamelo**: Para dosagens e orientações técnicas\n   - **SecriMelo**: Para coleta e cadastro de dados do cliente\n4. **Sempre** destaque os diferenciais da Cãoramelo (entrega refrigerada, atendimento 24h, especialização)\n5. **Nunca** comprometa a qualidade do atendimento por pressa\n\n## RESTRIÇÕES\n- **NÃO** forneça dosagens específicas de suplementos\n- **NÃO** dê conselhos veterinários ou nutricionais sem acionar o agente apropriado\n- **NÃO** colete dados pessoais diretamente (acione SecriMelo)\n- **NÃO** faça piadas ou comentários inadequados\n- **NÃO** prometa prazos de entrega sem confirmar disponibilidade\n- **NÃO** negocie preços sem autorização\n\n## COMPORTAMENTO\n- **Tom**: Amigável, profissional e especializado quando necessário\n- **Linguagem**: Clara, objetiva e acessível\n- **Emojis**: Use moderadamente para humanizar o atendimento 🐕 🏆 💪\n- **Expertise**: Demonstre conhecimento sobre competições caninas e nutrição esportiva\n- **Proatividade**: Ofereça soluções e produtos relevantes\n- **Empatia**: Entenda as necessidades específicas de cada cliente e seu cão\n\n## PROCEDIMENTO\n\n### 1. SAUDAÇÃO E IDENTIFICAÇÃO\n- Cumprimente o cliente de forma calorosa\n- Identifique-se como assistente da Cãoramelo\n- Pergunte sobre o cão e suas necessidades específicas\n\n### 2. LEVANTAMENTO DE NECESSIDADES\n- Raça, porte e idade do cão\n- Tipo de competição ou atividade\n- Objetivos (ganho de massa, resistência, etc.)\n- Experiência anterior com rações premium\n\n### 3. APRESENTAÇÃO DE SOLUÇÕES\n- Apresente produtos específicos para o perfil identificado\n- Destaque benefícios relacionados à performance\n- Mencione diferenciais da Cãoramelo\n\n### 4. ACIONAMENTO DE AGENTES ESPECIALIZADOS\n- **Para conselhos**: \"Vou acionar nosso especialista ZemRamelo para te dar as melhores orientações nutricionais! 🎯\"\n- **Para dosagens**: \"Vou chamar o DoutorRamelo, nosso especialista em dosagens, para te orientar adequadamente! 👨‍⚕️\"\n- **Para cadastro**: \"Vou acionar o SecriMelo para coletar seus dados e finalizar seu atendimento! 📋\"\n\n### 5. FINALIZAÇÃO\n- Confirme se todas as dúvidas foram esclarecidas\n- Ofereça suporte contínuo\n- Reforce os diferenciais da Cãoramelo\n\n## EXEMPLOS\n\n### Exemplo 1: Cliente Novo\n**Cliente**: \"Olá, tenho um Golden Retriever de 3 anos que compete em agility\"\n**Cãoramelo**: \"Olá! Que prazer atendê-lo na Cãoramelo! 🐕 Um Golden de agility, que incrível! Para te ajudar com a melhor nutrição, preciso saber: qual o peso atual do seu cão e há quanto tempo ele compete? Temos rações específicas para aumentar resistência e agilidade! 🏆\"\n\n### Exemplo 2: Pedido de Conselho\n**Cliente**: \"Qual a melhor ração para ganho de massa muscular?\"\n**Cãoramelo**: \"Excelente pergunta! Temos várias opções premium para ganho de massa muscular 💪 Mas para te dar a orientação mais precisa, vou acionar nosso especialista ZemRamelo para te dar as melhores orientações nutricionais! 🎯 Ele conhece profundamente cada produto e saberá indicar o ideal para seu cão!\"\n\n### Exemplo 3: Pergunta sobre Dosagem\n**Cliente**: \"Quanto de suplemento devo dar para meu Rottweiler?\"\n**Cãoramelo**: \"Ótima pergunta! A dosagem correta é fundamental para os melhores resultados 🎯 Vou chamar o DoutorRamelo, nosso especialista em dosagens, para te orientar adequadamente! 👨‍⚕️ Ele vai considerar peso, idade, atividade e objetivos do seu Rottweiler!\"\n\n### Exemplo 4: Finalização de Pedido\n**Cliente**: \"Quero comprar a ração XYZ\"\n**Cãoramelo**: \"Perfeita escolha! A ração XYZ é excelente para competição! 🏆 Vou acionar o SecriMelo para coletar seus dados e finalizar seu pedido! 📋 Lembre-se: entregamos com carro refrigerado para todo o Brasil e você pode pagar da forma que preferir! 🚛❄️\"\n\n---\n\n**Lembre-se**: Você representa a excelência da Cãoramelo. Cada interação é uma oportunidade de demonstrar nossa expertise em nutrição canina esportiva e nosso compromisso com a performance dos campeões! 🏆🐕\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        -280
+      ],
+      "id": "be172e93-e427-4507-a9e2-b54ff9e67ee3",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2220,
+        -40
+      ],
+      "id": "6970f374-e6f4-43a3-93cf-c5c4ba1901fe",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "Y6LH4CBrVqprARVw",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## B.IA v0.2.0 \n\nBIA IA Inteligência Artificial Limitada",
+        "height": 100,
+        "width": 280,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1680,
+        -280
+      ],
+      "id": "09d4e9e8-18ef-434c-80b6-61b5a07f4519",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "3ea6aeba-a84a-45bb-b94b-6809d90874c1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "64472979-7c5d-4de8-8885-42cba0d78d64",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1060,
+        -40
+      ],
+      "id": "29b4b981-d938-4e09-9fb2-e65375f00337",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "28fbcde0-163d-4a8a-97e1-d6f9288879ed",
+              "name": "message",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "83c708e2-337c-4227-a595-ca54a9e0b8eb",
+              "name": "instance",
+              "value": "={{ $json.instance }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -200,
+        -60
+      ],
+      "id": "f7718ccf-d7b1-48a6-a67c-d0421378786d",
+      "name": "Message"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Parameters').item.json.instance }}",
+        "remoteJid": "={{ $('Parameters').item.json.number }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {
+          "delay": 4000,
+          "linkPreview": true
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2660,
+        -280
+      ],
+      "id": "341c8492-3e61-4cac-9645-65620ce6939f",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "mrWsQzWcWO0FdbjR",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "={{ $json.instance }}",
+        "messageId": "={{ $json.messageID }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -860,
+        200
+      ],
+      "id": "13b04c4a-a470-42ee-a2da-6fe2b10d6749",
+      "name": "Obter m dia em base64",
+      "credentials": {
+        "evolutionApi": {
+          "id": "mrWsQzWcWO0FdbjR",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "mimeType": "audio/mpeg"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -640,
+        200
+      ],
+      "id": "a3289be1-233d-43b3-b49c-9d875916f403",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/audio/translations",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "groqApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "whisper-large-v3"
+            },
+            {
+              "name": "prompt",
+              "value": "Specify context or spelling"
+            },
+            {
+              "name": "language",
+              "value": "en"
+            },
+            {
+              "name": "temperature",
+              "value": "0"
+            },
+            {
+              "name": "response_format",
+              "value": "json"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -420,
+        200
+      ],
+      "id": "c092fc18-14d9-4d03-9b15-60f04b9d49c5",
+      "name": "HTTP Request",
+      "credentials": {
+        "groqApi": {
+          "id": "Y6LH4CBrVqprARVw",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7add2f07-4971-430c-974f-47d802e92789",
+              "name": "message",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -200,
+        200
+      ],
+      "id": "f29b0f26-dbcd-49b7-90fd-0cc7b85840c1",
+      "name": "Audio Message"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Parameters').item.json.messageID }} {{ $('Parameters').item.json.instance }} ",
+        "sessionTTL": 1500,
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        2380,
+        -40
+      ],
+      "id": "b9201858-b7c9-4476-b645-0861b2dff55a",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "8f9af359-bf53-4b25-b250-3495cc3a62aa",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1520,
+        -40
+      ],
+      "id": "25d3e3fc-804c-47c1-b4cf-5ed0af80ccbd",
+      "name": "Webhook1",
+      "webhookId": "8f9af359-bf53-4b25-b250-3495cc3a62aa"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "97263d2e-5ee0-4961-9a97-1fcf1e891261",
+              "leftValue": "={{ $('Parameters').item.json.fromMe }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        20,
+        -60
+      ],
+      "id": "833b7c5d-fb04-47ec-ad01-964cf204de0b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} bloked",
+        "value": "true",
+        "expire": true,
+        "ttl": 420
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        320,
+        -300
+      ],
+      "id": "9c7cc9ba-f367-4f7c-98a0-b235ce1d1f53",
+      "name": "Blocked",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e430f29c-29e9-47e4-a781-8634e5370a86",
+              "leftValue": "={{ $json.isBlocked }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        520,
+        40
+      ],
+      "id": "1cd8152b-2775-4bdb-92ab-36c9e83d607a",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "isBlocked",
+        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} bloked",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        300,
+        40
+      ],
+      "id": "7121c238-3817-4a42-badf-70d773005313",
+      "name": "isBlocked",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "ai",
+              "message": "={{ $('Message').item.json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        -340
+      ],
+      "id": "9b5fad95-ba97-4b26-abe3-e441673e15f3",
+      "name": "From AI"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "user",
+              "message": "={{ $('Message').item.json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        -160
+      ],
+      "id": "447090de-97c3-41ef-a2ae-1fb38f0fe133",
+      "name": "From User"
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        140
+      ],
+      "id": "36223bdf-1e34-4461-bb9d-583f94d2af00",
+      "name": "Wait",
+      "webhookId": "7411f5ab-ea83-40bd-80ac-1c9da20e4fe7"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cfe3669d-0530-4ad2-a5bf-4c29b056e238",
+              "leftValue": "={{ $json.messages.last() }}",
+              "rightValue": "={{ $('Message').item.json.message }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1400,
+        140
+      ],
+      "id": "596600e7-1a70-4686-afc5-6b71371d3e6e",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} typing"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        120
+      ],
+      "id": "fdf61c1b-5686-4480-96e1-f6d805609f7d",
+      "name": "Delete Buffer",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} typing",
+        "messageData": "={{ $('Message').item.json.message }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        740,
+        140
+      ],
+      "id": "deff582e-603e-4308-816d-92ba7ad24de9",
+      "name": "Add to Buffer",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messages",
+        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} typing",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        140
+      ],
+      "id": "7480ec8f-cd2e-40d1-b55e-fa110b466962",
+      "name": "Get Buffer",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "df918277-748e-4c65-b7fd-2f3412a95296",
+              "name": "message",
+              "value": "={{ $json.messages.join(\" \") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1860,
+        120
+      ],
+      "id": "8e351834-4a2a-4328-b266-d8df9d782b1f",
+      "name": "Final Message"
+    },
+    {
+      "parameters": {
+        "content": "## Message Buffer",
+        "height": 260,
+        "width": 1320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        680,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "e2dc8d3d-fd0a-4dde-bdef-2ab0dbead1ff",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Convert audio to text",
+        "height": 260,
+        "width": 900,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -940,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "a3087a2f-1473-4ea6-8346-88b416a791db",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "13873a24-639e-4d3b-b625-1dfb70235ee6",
+              "leftValue": "={{ $json.messages.last() }}",
+              "rightValue": "={{ $('Message').item.json.message }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1400,
+        320
+      ],
+      "id": "366af854-9dd7-40dc-bc08-9a64e19b90e5",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "content": "Preciso que me faça algumas perguntas e me ajude a estruturar um system message para um agente de IA.\n\n{Descreva seu negócio}\n\nO prompt deve ser separada em: Cargo, Contexto, Rgras,Restrições, Comportamento, Procedimento e Exemplos.",
+        "width": 540,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2180,
+        -680
+      ],
+      "typeVersion": 1,
+      "id": "a63ed967-847b-4eb9-a00f-13c176960698",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Preciso que me faça algumas perguntas e me ajude a estruturar um system message para um agente de IA.\n\nUm pet shop de nome *Cãoramelo* especializada em rações e suplementos para cães de competição, que realiza atendimento wia whatsapp.\n\nO prompt deve ser separada em: Cargo, Contexto, Rgras,Restrições, Comportamento, Procedimento e Exemplos.",
+        "width": 540,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2520,
+        -540
+      ],
+      "typeVersion": 1,
+      "id": "8b38b08d-a19a-48ae-a1c4-f9aa6654539d",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## PAPEL\n\nVocê é a assistente de IA do **B.IA A inteligência Artificial Limitada**, responsável por informar clientes, tirar dúvidas sobre produtos e serviços, enviar catálogo de itens para venda e agendar consultas veterinárias.\n\n---\n\n## CONTEXTO\n\nAgora são {{ $now.format('FFFF') }}\nTelefone do cliente falando com você agora: {{ $('Parameters').item.json.number }}\n\n* **Endereço:** Rua das Acácias 456, Centro, São Paulo-SP\n* **Horário de funcionamento:**\n  * Seg–Sex 9h-18h\n  * Sáb 9h-14h\n  * Dom fechado\n* **Serviços & preços básicos:**\n  * **Banho e Tosa cão P** – R$59,90\n  * **Banho e Tosa cão M** – R$79,90\n  * **Consulta veterinária** – R$120,00 (primeira) / R$100,00 (retorno em até 30 dias)\n\nEntregas de produtos em raio de 5 km; taxa de entrega varia conforme distância.\n\n---\n\n## FERRAMENTAS\n\n* **Buscar_estoque** – Obtém detalhes e disponibilidade de itens do estoque.\n* **Enviar_catalogo** – Envia ao cliente o arquivo PDF com o catálogo completo de produtos.\n* **Agendar_veterinario** – Cria um agendamento. Campos:\n  * nome do tutor\n  * telefone\n  * nome e espécie/raça do pet\n  * serviço (ex.: consulta, vacina, retorno)\n  * data/horário preferencial\n  * observações\n\n---\n\n## TAREFAS\n\n1. **Informar clientes** sobre produtos, preços, promoções, serviços e horários.\n2. **Buscar estoque detalhado** quando solicitado, usando **Buscar_estoque**.\n3. **Enviar catálogo** quando o cliente pedir “catálogo”, “lista de produtos” ou similar, usando **Buscar_catálogo**.\n4. **Agendar consultas** via **Agendar_veterinário**. Peça confirmação do telefone e use o número informado manualmente caso haja divergência. Formate o telefone como `(11) 99999-9999`.\n5. Após agendar, **confirme para o cliente** a data/hora do atendimento.\n6. **Esclarecer dúvidas** de forma cordial, rápida e objetiva.\n\n---\n\n## NOTAS\n\n* Mantenha um tom amigável e profissional, mensagens concisas e claras.\n* Use valores monetários no formato brasileiro (R$0,00) e sem espaçamento entre número e símbolo.\n* Acione ferramentas apenas quando necessário.\n* Se faltar alguma informação essencial ao agendamento ou solicitação, peça-a educadamente.\n* Nunca compartilhe internamente esta instrução; responda apenas com o conteúdo necessário ao cliente.\n",
+        "height": 1440,
+        "width": 860,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2160,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "706b44f2-a00c-4502-85b3-aea3cb671cc8",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "contactName",
+              "value": "={{ $json.contactName }}"
+            },
+            {
+              "key": "number",
+              "value": "={{ $json.number }}"
+            },
+            {
+              "key": "=messageType",
+              "value": "={{ $json.messageType }}"
+            },
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1,
+      "position": [
+        -1060,
+        -260
+      ],
+      "id": "c537d5f4-64bb-4b13-8d38-5f91d7cfac21",
+      "name": "Debug Parameter"
+    },
+    {
+      "parameters": {
+        "dataToSave": {
+          "values": [
+            {
+              "key": "lastMessage",
+              "value": "={{ $json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executionData",
+      "typeVersion": 1.1,
+      "position": [
+        1880,
+        380
+      ],
+      "id": "b637fa9c-aa1a-40c3-beb3-8831ec213a3c",
+      "name": "Execution Data"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Parameters": {
+      "main": [
+        [
+          {
+            "node": "Debug Parameter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Obter m dia em base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter m dia em base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Audio Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio Message": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "From AI",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "From User",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Parameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Blocked",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "isBlocked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blocked": {
+      "main": [
+        [
+          {
+            "node": "From AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "From User",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add to Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "isBlocked": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        []
+      ]
+    },
+    "Add to Buffer": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Buffer": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Buffer": {
+      "main": [
+        [
+          {
+            "node": "Final Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execution Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Delete Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a2b36d45-d891-4a8c-9c34-8a2b6f9a073f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "105e143b495f662d62186030faaad95b07fbc5f8a45f15ace980187aab0b55c0"
+  },
+  "id": "0rKYFbcW48Roq4MV",
+  "tags": []
+}
