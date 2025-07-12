@@ -77,8 +77,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        80,
-        -200
+        2240,
+        -280
       ],
       "id": "cdeb8fea-813a-4c26-bef7-2f43cb836eda",
       "name": "AI Agent"
@@ -90,8 +90,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        20,
-        60
+        2220,
+        -40
       ],
       "id": "0dcde2c9-8ebc-4b37-b4a0-e9aea11338d2",
       "name": "Groq Chat Model",
@@ -237,7 +237,7 @@
       "typeVersion": 3.4,
       "position": [
         -200,
-        -200
+        -60
       ],
       "id": "b17327ab-87c8-4a29-ade0-a1ed09bc68a1",
       "name": "Message"
@@ -256,8 +256,8 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        440,
-        -200
+        2660,
+        -280
       ],
       "id": "21c966b7-3138-42a7-9d09-7d850a05a08d",
       "name": "Enviar texto",
@@ -394,8 +394,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
       "typeVersion": 1.5,
       "position": [
-        140,
-        60
+        2380,
+        -40
       ],
       "id": "05785f56-6c6a-4ee9-a436-b1a194b92a81",
       "name": "Redis Chat Memory",
@@ -421,6 +421,330 @@
       "id": "7f4f4617-9435-470d-96c6-59e768636c77",
       "name": "Webhook1",
       "webhookId": "852f4ee7-8c26-4e6b-b842-99155d38ddd3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "97263d2e-5ee0-4961-9a97-1fcf1e891261",
+              "leftValue": "={{ $('Parameters').item.json.fromMe }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        20,
+        -60
+      ],
+      "id": "5a757d5b-f1db-47d6-8996-ea09ae87b62e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} bloked",
+        "value": "true",
+        "expire": true,
+        "ttl": 420
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        320,
+        -300
+      ],
+      "id": "7e29eba1-aeac-40a3-a8ad-c34ed1ca5dbc",
+      "name": "Blocked",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e430f29c-29e9-47e4-a781-8634e5370a86",
+              "leftValue": "={{ $json.isBlocked }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        520,
+        40
+      ],
+      "id": "97d29ac9-d385-4479-b681-9b3a7159d1e0",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "isBlocked",
+        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} bloked",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        300,
+        40
+      ],
+      "id": "b12de50a-5813-450e-adac-515814a5a5ee",
+      "name": "isBlocked",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "ai",
+              "message": "={{ $('Message').item.json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        -320
+      ],
+      "id": "821fc586-fcd4-4ca0-bafb-327de8cc4fe9",
+      "name": "From AI"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "user",
+              "message": "={{ $('Message').item.json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        -160
+      ],
+      "id": "56ee3c64-ffee-4950-be96-768d25beb732",
+      "name": "From User"
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        140
+      ],
+      "id": "f37e167b-76f8-43e8-b3df-7f903bfcab62",
+      "name": "Wait",
+      "webhookId": "02d3d8f2-2910-420b-a322-dd3d42b1d3aa"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cfe3669d-0530-4ad2-a5bf-4c29b056e238",
+              "leftValue": "={{ $json.messages.last() }}",
+              "rightValue": "={{ $('Message').item.json.message }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1400,
+        140
+      ],
+      "id": "a07a09a3-2a7f-4083-b998-d11fe6321b93",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} typing"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        120
+      ],
+      "id": "205bb73d-478a-45fb-97a7-ea57bbc528f1",
+      "name": "Delete Buffer",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} typing",
+        "messageData": "={{ $('Message').item.json.message }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        740,
+        140
+      ],
+      "id": "f5bc9c80-fb12-486b-ae6c-4b00061d4410",
+      "name": "Add to Buffer",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messages",
+        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} typing",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        140
+      ],
+      "id": "a9ba38d0-bb9b-4b65-91f4-42688c521022",
+      "name": "Get Buffer",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "df918277-748e-4c65-b7fd-2f3412a95296",
+              "name": "message",
+              "value": "={{ $json.messages.join(\" \") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1860,
+        120
+      ],
+      "id": "9ae8fc83-2d91-482e-9523-416b69182d81",
+      "name": "Final Message"
+    },
+    {
+      "parameters": {
+        "content": "## Message Buffer",
+        "height": 260,
+        "width": 1320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        680,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "9ca1cbab-2757-4b7b-bc99-8097db8e9d22",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Convert audio to text",
+        "height": 260,
+        "width": 900,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -940,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "fcd90669-2d0f-4b06-b63b-f891fcfd5e80",
+      "name": "Sticky Note2"
     }
   ],
   "pinData": {
@@ -430,7 +754,7 @@
           "headers": {
             "host": "bia-n8n.fexiid.easypanel.host",
             "user-agent": "axios/1.10.0",
-            "content-length": "1124",
+            "content-length": "1122",
             "accept": "application/json, text/plain, */*",
             "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
@@ -438,7 +762,7 @@
             "x-forwarded-host": "bia-n8n.fexiid.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "406ae1a8cd5b",
+            "x-forwarded-server": "bdc8050f5baa",
             "x-real-ip": "172.20.0.1"
           },
           "params": {},
@@ -450,7 +774,7 @@
               "key": {
                 "remoteJid": "554191853938@s.whatsapp.net",
                 "fromMe": false,
-                "id": "94DA3C9A0480AC8EA3629EBD8724762F",
+                "id": "F38A48820FC8E7CD5EEB82A59E91EDE0",
                 "senderLid": "13722487681154@lid"
               },
               "pushName": "Waldir Borba Junior",
@@ -460,13 +784,13 @@
                   "deviceListMetadata": {
                     "senderKeyHash": "2IeBxdQB6gvLcA==",
                     "senderTimestamp": "1752102956",
-                    "recipientKeyHash": "fTp3jwYUU4ZjJw==",
-                    "recipientTimestamp": "1752264468"
+                    "recipientKeyHash": "Zkff5wNizcZ9eQ==",
+                    "recipientTimestamp": "1752346523"
                   },
                   "deviceListMetadataVersion": 2,
-                  "messageSecret": "8sqdpKl/Lqbz/V40XU73ztDrrn5HTBfdvygmyROaDqQ="
+                  "messageSecret": "2wtSYk/Ac6cVRF7BF/h2DlXem63ij5dUlNz5tyy5F7E="
                 },
-                "conversation": "Ola"
+                "conversation": "O"
               },
               "contextInfo": {
                 "expiration": 86400,
@@ -478,12 +802,12 @@
                 }
               },
               "messageType": "conversation",
-              "messageTimestamp": 1752284656,
+              "messageTimestamp": 1752350158,
               "instanceId": "15b905e2-7243-4fbf-a7ae-5c81f5d4717d",
               "source": "android"
             },
             "destination": "https://bia-n8n.fexiid.easypanel.host/webhook-test/bia",
-            "date_time": "2025-07-11T22:44:17.235Z",
+            "date_time": "2025-07-12T16:55:59.101Z",
             "sender": "554195082989@s.whatsapp.net",
             "server_url": "https://bia-evolution-api.fexiid.easypanel.host",
             "apikey": "C796EF272144-4C2F-A6CA-AC95984CFE54"
@@ -555,7 +879,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -599,7 +923,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -611,6 +935,16 @@
         [
           {
             "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "From AI",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "From User",
             "type": "ai_memory",
             "index": 0
           }
@@ -627,13 +961,137 @@
           }
         ]
       ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Blocked",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "isBlocked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blocked": {
+      "main": [
+        [
+          {
+            "node": "From AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "From User",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add to Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "isBlocked": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Delete Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Buffer": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Buffer": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Buffer": {
+      "main": [
+        [
+          {
+            "node": "Final Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "9095f16a-6f71-4118-96de-4b9dbcb48e84",
+  "versionId": "4f1f0cdb-93fc-4e95-975c-77b7b0e6a59c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "105e143b495f662d62186030faaad95b07fbc5f8a45f15ace980187aab0b55c0"
