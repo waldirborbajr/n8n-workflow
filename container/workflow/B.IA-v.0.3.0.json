@@ -380,7 +380,7 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "8f9af359-bf53-4b25-b250-3495cc3a62aa",
+        "path": "bia",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
@@ -566,48 +566,14 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "cfe3669d-0530-4ad2-a5bf-4c29b056e238",
-              "leftValue": "={{ $json.messages.last() }}",
-              "rightValue": "={{ $('Message').item.json.message }}",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        1400,
-        140
-      ],
-      "id": "596600e7-1a70-4686-afc5-6b71371d3e6e",
-      "name": "If2"
-    },
-    {
-      "parameters": {
         "operation": "delete",
-        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} typing"
+        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} temp"
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
         1660,
-        120
+        140
       ],
       "id": "fdf61c1b-5686-4480-96e1-f6d805609f7d",
       "name": "Delete Buffer",
@@ -621,7 +587,7 @@
     {
       "parameters": {
         "operation": "push",
-        "list": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} typing",
+        "list": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} temp",
         "messageData": "={{ $('Message').item.json.message }}",
         "tail": true
       },
@@ -644,7 +610,7 @@
       "parameters": {
         "operation": "get",
         "propertyName": "messages",
-        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} typing",
+        "key": "={{ $('Parameters').item.json.instance }} {{ $('Parameters').item.json.number }} temp",
         "options": {}
       },
       "type": "n8n-nodes-base.redis",
@@ -716,40 +682,6 @@
       "typeVersion": 1,
       "id": "a3087a2f-1473-4ea6-8346-88b416a791db",
       "name": "Sticky Note2"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "13873a24-639e-4d3b-b625-1dfb70235ee6",
-              "leftValue": "={{ $json.messages.last() }}",
-              "rightValue": "={{ $('Message').item.json.message }}",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
-      "position": [
-        1400,
-        320
-      ],
-      "id": "366af854-9dd7-40dc-bc08-9a64e19b90e5",
-      "name": "Filter"
     },
     {
       "parameters": {
@@ -845,9 +777,113 @@
       ],
       "id": "b637fa9c-aa1a-40c3-beb3-8831ec213a3c",
       "name": "Execution Data"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "13873a24-639e-4d3b-b625-1dfb70235ee6",
+              "leftValue": "={{ $json.messages.last() }}",
+              "rightValue": "={{ $('Message').item.json.message }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1420,
+        140
+      ],
+      "id": "366af854-9dd7-40dc-bc08-9a64e19b90e5",
+      "name": "Last vs Current"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "bia-n8n.fexiid.easypanel.host",
+            "user-agent": "axios/1.10.0",
+            "content-length": "1123",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.20.0.1",
+            "x-forwarded-host": "bia-n8n.fexiid.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "335dfa709cda",
+            "x-real-ip": "172.20.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "bia",
+            "data": {
+              "key": {
+                "remoteJid": "554191853938@s.whatsapp.net",
+                "fromMe": false,
+                "id": "0123625AB567C1C14ECFE6ED69866B45",
+                "senderLid": "13722487681154@lid"
+              },
+              "pushName": "Waldir Borba Junior",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "2IeBxdQB6gvLcA==",
+                    "senderTimestamp": "1752102956",
+                    "recipientKeyHash": "3LA6of9nAKbbbg==",
+                    "recipientTimestamp": "1752444947"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "7KjRSoRZWWc1MP8hPozr25pkSTagziyVxj+vomji6y4="
+                },
+                "conversation": "Qoi"
+              },
+              "contextInfo": {
+                "expiration": 86400,
+                "ephemeralSettingTimestamp": "1715880483",
+                "disappearingMode": {
+                  "initiator": "INITIATED_BY_ME",
+                  "trigger": "ACCOUNT_SETTING",
+                  "initiatedByMe": true
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1752445332,
+              "instanceId": "b36c47b1-7f91-45f4-8660-06ba2c4b6916",
+              "source": "android"
+            },
+            "destination": "https://bia-n8n.fexiid.easypanel.host/webhook-test/bia",
+            "date_time": "2025-07-13T19:22:13.102Z",
+            "sender": "554195082989@s.whatsapp.net",
+            "server_url": "https://bia-evolution-api.fexiid.easypanel.host",
+            "apikey": "5583AE90DCA6-4D18-83FF-52967AC25C61"
+          },
+          "webhookUrl": "https://bia-n8n.fexiid.easypanel.host/webhook-test/bia",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
   "connections": {
     "Parameters": {
       "main": [
@@ -1061,11 +1097,6 @@
         ]
       ]
     },
-    "If2": {
-      "main": [
-        []
-      ]
-    },
     "Add to Buffer": {
       "main": [
         [
@@ -1081,7 +1112,7 @@
       "main": [
         [
           {
-            "node": "Filter",
+            "node": "Last vs Current",
             "type": "main",
             "index": 0
           }
@@ -1115,7 +1146,7 @@
         ]
       ]
     },
-    "Filter": {
+    "Last vs Current": {
       "main": [
         [
           {
@@ -1131,7 +1162,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "a2b36d45-d891-4a8c-9c34-8a2b6f9a073f",
+  "versionId": "fd9a5810-d083-42ad-8980-18893b4a1d54",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "105e143b495f662d62186030faaad95b07fbc5f8a45f15ace980187aab0b55c0"
