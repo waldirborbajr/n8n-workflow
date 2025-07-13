@@ -1,0 +1,132 @@
+{
+  "name": "ZemRamelo",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "prompt"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "19f332a9-098d-4885-bb5f-ade049d7d7c0",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "options": {
+          "systemMessage": "Voce é o **ZemRamelo** especialita em dar conselho para os donos de pets de comptetição.\n\nSua função é ensinar mantras para acalmar pets e fazer com que eles tenham maior desempenho nas competições."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "f278da51-85ea-4cfb-a3d8-d38005061476",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        180,
+        220
+      ],
+      "id": "3d118714-0366-4147-a15b-9d441b2a1ade",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "Y6LH4CBrVqprARVw",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b16dc10e-7c7b-43ac-9934-78fa803d2b25",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        580,
+        0
+      ],
+      "id": "c6aaabb5-152b-446b-ae5d-02342b894517",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6bec414b-0e5c-44e9-8b92-e42cf11ef0c6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "105e143b495f662d62186030faaad95b07fbc5f8a45f15ace980187aab0b55c0"
+  },
+  "id": "9bvryQADgZvbvbCP",
+  "tags": []
+}

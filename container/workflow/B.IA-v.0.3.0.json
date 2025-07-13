@@ -78,7 +78,7 @@
       "typeVersion": 2,
       "position": [
         2240,
-        -280
+        -260
       ],
       "id": "be172e93-e427-4507-a9e2-b54ff9e67ee3",
       "name": "AI Agent"
@@ -90,8 +90,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        2220,
-        -40
+        2140,
+        0
       ],
       "id": "6970f374-e6f4-43a3-93cf-c5c4ba1901fe",
       "name": "Groq Chat Model",
@@ -365,8 +365,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
       "typeVersion": 1.5,
       "position": [
-        2380,
-        -40
+        2300,
+        0
       ],
       "id": "b9201858-b7c9-4476-b645-0861b2dff55a",
       "name": "Redis Chat Memory",
@@ -646,7 +646,7 @@
       "typeVersion": 3.4,
       "position": [
         1860,
-        120
+        140
       ],
       "id": "8e351834-4a2a-4328-b266-d8df9d782b1f",
       "name": "Final Message"
@@ -722,8 +722,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2160,
-        160
+        3100,
+        -700
       ],
       "typeVersion": 1,
       "id": "706b44f2-a00c-4502-85b3-aea3cb671cc8",
@@ -811,79 +811,93 @@
       ],
       "id": "366af854-9dd7-40dc-bc08-9a64e19b90e5",
       "name": "Last vs Current"
+    },
+    {
+      "parameters": {
+        "content": "## Main Agent",
+        "height": 220,
+        "width": 340,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2180,
+        -340
+      ],
+      "typeVersion": 1,
+      "id": "196815eb-16ca-4e5f-a183-a0f6d48bb49e",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        2520,
+        -40
+      ],
+      "id": "b57f8765-3ed5-483a-b14c-856c741e3bf4",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "description": "Converse om o agente **ZemRamelo** que é especialita em dicas para acalmar e mantras para preparar os pets para competição.",
+        "workflowId": {
+          "__rl": true,
+          "value": "9bvryQADgZvbvbCP",
+          "mode": "list",
+          "cachedResultName": "ZemRamelo"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "prompt": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('prompt', `Mensagem para o agente **ZemRamelo**`, 'string') }}"
+          },
+          "matchingColumns": [
+            "prompt"
+          ],
+          "schema": [
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2400,
+        180
+      ],
+      "id": "e4d60f58-5f9a-4b7e-ac04-0810c73ab5b8",
+      "name": "Agente-ZemRamelo"
+    },
+    {
+      "parameters": {
+        "content": "## Agents",
+        "height": 220,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2300,
+        120
+      ],
+      "typeVersion": 1,
+      "id": "c5f70bf5-61e6-4cca-9d82-93ad62fd671a",
+      "name": "Sticky Note7"
     }
   ],
-  "pinData": {
-    "Webhook1": [
-      {
-        "json": {
-          "headers": {
-            "host": "bia-n8n.fexiid.easypanel.host",
-            "user-agent": "axios/1.10.0",
-            "content-length": "1123",
-            "accept": "application/json, text/plain, */*",
-            "accept-encoding": "gzip, compress, deflate, br",
-            "content-type": "application/json",
-            "x-forwarded-for": "172.20.0.1",
-            "x-forwarded-host": "bia-n8n.fexiid.easypanel.host",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "335dfa709cda",
-            "x-real-ip": "172.20.0.1"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "event": "messages.upsert",
-            "instance": "bia",
-            "data": {
-              "key": {
-                "remoteJid": "554191853938@s.whatsapp.net",
-                "fromMe": false,
-                "id": "0123625AB567C1C14ECFE6ED69866B45",
-                "senderLid": "13722487681154@lid"
-              },
-              "pushName": "Waldir Borba Junior",
-              "status": "DELIVERY_ACK",
-              "message": {
-                "messageContextInfo": {
-                  "deviceListMetadata": {
-                    "senderKeyHash": "2IeBxdQB6gvLcA==",
-                    "senderTimestamp": "1752102956",
-                    "recipientKeyHash": "3LA6of9nAKbbbg==",
-                    "recipientTimestamp": "1752444947"
-                  },
-                  "deviceListMetadataVersion": 2,
-                  "messageSecret": "7KjRSoRZWWc1MP8hPozr25pkSTagziyVxj+vomji6y4="
-                },
-                "conversation": "Qoi"
-              },
-              "contextInfo": {
-                "expiration": 86400,
-                "ephemeralSettingTimestamp": "1715880483",
-                "disappearingMode": {
-                  "initiator": "INITIATED_BY_ME",
-                  "trigger": "ACCOUNT_SETTING",
-                  "initiatedByMe": true
-                }
-              },
-              "messageType": "conversation",
-              "messageTimestamp": 1752445332,
-              "instanceId": "b36c47b1-7f91-45f4-8660-06ba2c4b6916",
-              "source": "android"
-            },
-            "destination": "https://bia-n8n.fexiid.easypanel.host/webhook-test/bia",
-            "date_time": "2025-07-13T19:22:13.102Z",
-            "sender": "554195082989@s.whatsapp.net",
-            "server_url": "https://bia-evolution-api.fexiid.easypanel.host",
-            "apikey": "5583AE90DCA6-4D18-83FF-52967AC25C61"
-          },
-          "webhookUrl": "https://bia-n8n.fexiid.easypanel.host/webhook-test/bia",
-          "executionMode": "test"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "connections": {
     "Parameters": {
       "main": [
@@ -1156,13 +1170,35 @@
           }
         ]
       ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente-ZemRamelo": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "fd9a5810-d083-42ad-8980-18893b4a1d54",
+  "versionId": "d3e1b71a-39e2-4263-8b34-0a011eb61ca4",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "105e143b495f662d62186030faaad95b07fbc5f8a45f15ace980187aab0b55c0"
