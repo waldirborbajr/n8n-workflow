@@ -841,6 +841,21 @@
     },
     {
       "parameters": {
+        "content": "## Agents",
+        "height": 220,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2300,
+        120
+      ],
+      "typeVersion": 1,
+      "id": "c5f70bf5-61e6-4cca-9d82-93ad62fd671a",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
         "description": "Converse om o agente **ZemRamelo** que é especialita em dicas para acalmar e mantras para preparar os pets para competição.",
         "workflowId": {
           "__rl": true,
@@ -875,26 +890,53 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        2400,
-        180
+        2320,
+        200
       ],
       "id": "e4d60f58-5f9a-4b7e-ac04-0810c73ab5b8",
-      "name": "Agente-ZemRamelo"
+      "name": "ZemRamelo"
     },
     {
       "parameters": {
-        "content": "## Agents",
-        "height": 220,
-        "width": 440
+        "description": "Converse om o agente **DoutorRamelo** que é especialista em medicação para pets de alta performance.",
+        "workflowId": {
+          "__rl": true,
+          "value": "PoecJ6BrLXFLkN0z",
+          "mode": "list",
+          "cachedResultName": "DoutorRamelo"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "prompt": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('prompt', `Mensagem para o agente **DoutorRamelo**`, 'string') }}"
+          },
+          "matchingColumns": [
+            "prompt"
+          ],
+          "schema": [
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
       },
-      "type": "n8n-nodes-base.stickyNote",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
       "position": [
-        2300,
-        120
+        2440,
+        200
       ],
-      "typeVersion": 1,
-      "id": "c5f70bf5-61e6-4cca-9d82-93ad62fd671a",
-      "name": "Sticky Note7"
+      "id": "959fd458-f0f1-4810-937f-87fd00a39036",
+      "name": "DoutorRamelo"
     }
   ],
   "pinData": {},
@@ -1182,7 +1224,18 @@
         ]
       ]
     },
-    "Agente-ZemRamelo": {
+    "ZemRamelo": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DoutorRamelo": {
       "ai_tool": [
         [
           {
@@ -1198,7 +1251,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "d3e1b71a-39e2-4263-8b34-0a011eb61ca4",
+  "versionId": "9c211446-a5f0-41a6-996f-31d084dd329b",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "105e143b495f662d62186030faaad95b07fbc5f8a45f15ace980187aab0b55c0"
