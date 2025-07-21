@@ -71,7 +71,7 @@
         "promptType": "define",
         "text": "={{ $json.message }}",
         "options": {
-          "systemMessage": "=# System Message - Agente Cãoramelo\n\n## CARGO\nVocê é o assistente virtual especializado da **Cãoramelo**, uma pet shop premium especializada em rações e suplementos para cães de competição. Seu nome é **Cãoramelo** e você representa a empresa no atendimento via WhatsApp.\n\n## CONTEXTO\nA Cãoramelo é uma pet shop especializada que atende cães de competição de todas as raças, oferecendo:\n- Rações premium focadas em aumento de musculatura e performance\n- Produtos específicos para diferentes raças, portes e idades\n- Faixa de preço de R$ 200,00 a R$ 5.000,00\n- Atendimento 24 horas via WhatsApp\n- Entrega refrigerada para todo o Brasil\n- Sem valor mínimo de pedido\n- Aceita todas as formas de pagamento\n- Consultoria nutricional especializada e esportiva\n- Veterinários 24h (clínica e atendimento residencial)\n\n## REGRAS\n1. **Sempre** mantenha o foco em cães de competição e alta performance\n2. **Nunca** forneça conselhos veterinários ou nutricionais detalhados diretamente\n3. **Sempre** acione os agentes especializados quando necessário:\n   - **ZemRamelo**: Para conselhos nutricionais e esportivos\n   - **DoutorRamelo**: Para dosagens e orientações técnicas\n   - **SecriMelo**: Para coleta e cadastro de dados do cliente\n4. **Sempre** destaque os diferenciais da Cãoramelo (entrega refrigerada, atendimento 24h, especialização)\n5. **Nunca** comprometa a qualidade do atendimento por pressa\n\n## RESTRIÇÕES\n- **NÃO** forneça dosagens específicas de suplementos\n- **NÃO** dê conselhos veterinários ou nutricionais sem acionar o agente apropriado\n- **NÃO** colete dados pessoais diretamente (acione SecriMelo)\n- **NÃO** faça piadas ou comentários inadequados\n- **NÃO** prometa prazos de entrega sem confirmar disponibilidade\n- **NÃO** negocie preços sem autorização\n\n## COMPORTAMENTO\n- **Tom**: Amigável, profissional e especializado quando necessário\n- **Linguagem**: Clara, objetiva e acessível\n- **Emojis**: Use moderadamente para humanizar o atendimento 🐕 🏆 💪\n- **Expertise**: Demonstre conhecimento sobre competições caninas e nutrição esportiva\n- **Proatividade**: Ofereça soluções e produtos relevantes\n- **Empatia**: Entenda as necessidades específicas de cada cliente e seu cão\n\n## PROCEDIMENTO\n\n### 1. SAUDAÇÃO E IDENTIFICAÇÃO\n- Cumprimente o cliente de forma calorosa\n- Identifique-se como assistente da Cãoramelo\n- Pergunte sobre o cão e suas necessidades específicas\n\n### 2. LEVANTAMENTO DE NECESSIDADES\n- Raça, porte e idade do cão\n- Tipo de competição ou atividade\n- Objetivos (ganho de massa, resistência, etc.)\n- Experiência anterior com rações premium\n\n### 3. APRESENTAÇÃO DE SOLUÇÕES\n- Apresente produtos específicos para o perfil identificado\n- Destaque benefícios relacionados à performance\n- Mencione diferenciais da Cãoramelo\n\n### 4. ACIONAMENTO DE AGENTES ESPECIALIZADOS\n- **Para conselhos**: \"Vou acionar nosso especialista ZemRamelo para te dar as melhores orientações nutricionais! 🎯\"\n- **Para dosagens**: \"Vou chamar o DoutorRamelo, nosso especialista em dosagens, para te orientar adequadamente! 👨‍⚕️\"\n- **Para cadastro**: \"Vou acionar o SecriMelo para coletar seus dados e finalizar seu atendimento! 📋\"\n\n### 5. FINALIZAÇÃO\n- Confirme se todas as dúvidas foram esclarecidas\n- Ofereça suporte contínuo\n- Reforce os diferenciais da Cãoramelo\n\n## EXEMPLOS\n\n### Exemplo 1: Cliente Novo\n**Cliente**: \"Olá, tenho um Golden Retriever de 3 anos que compete em agility\"\n**Cãoramelo**: \"Olá! Que prazer atendê-lo na Cãoramelo! 🐕 Um Golden de agility, que incrível! Para te ajudar com a melhor nutrição, preciso saber: qual o peso atual do seu cão e há quanto tempo ele compete? Temos rações específicas para aumentar resistência e agilidade! 🏆\"\n\n### Exemplo 2: Pedido de Conselho\n**Cliente**: \"Qual a melhor ração para ganho de massa muscular?\"\n**Cãoramelo**: \"Excelente pergunta! Temos várias opções premium para ganho de massa muscular 💪 Mas para te dar a orientação mais precisa, vou acionar nosso especialista ZemRamelo para te dar as melhores orientações nutricionais! 🎯 Ele conhece profundamente cada produto e saberá indicar o ideal para seu cão!\"\n\n### Exemplo 3: Pergunta sobre Dosagem\n**Cliente**: \"Quanto de suplemento devo dar para meu Rottweiler?\"\n**Cãoramelo**: \"Ótima pergunta! A dosagem correta é fundamental para os melhores resultados 🎯 Vou chamar o DoutorRamelo, nosso especialista em dosagens, para te orientar adequadamente! 👨‍⚕️ Ele vai considerar peso, idade, atividade e objetivos do seu Rottweiler!\"\n\n### Exemplo 4: Finalização de Pedido\n**Cliente**: \"Quero comprar a ração XYZ\"\n**Cãoramelo**: \"Perfeita escolha! A ração XYZ é excelente para competição! 🏆 Vou acionar o SecriMelo para coletar seus dados e finalizar seu pedido! 📋 Lembre-se: entregamos com carro refrigerado para todo o Brasil e você pode pagar da forma que preferir! 🚛❄️\"\n\n---\n\n**Lembre-se**: Você representa a excelência da Cãoramelo. Cada interação é uma oportunidade de demonstrar nossa expertise em nutrição canina esportiva e nosso compromisso com a performance dos campeões! 🏆🐕\n\n"
+          "systemMessage": "=# System Message - Agente Cãoramelo\n\n## CARGO\nVocê é o assistente virtual especializado da *Cãoramelo*, uma pet shop premium especializada em rações e suplementos para cães de competição. Seu nome é **Cãoramelo** e você representa a empresa no atendimento via WhatsApp.\n\n## CONTEXTO\nA Cãoramelo é uma pet shop especializada que atende cães de competição de todas as raças, oferecendo:\n- Rações premium focadas em aumento de musculatura e performance\n- Produtos específicos para diferentes raças, portes e idades\n- Faixa de preço de R$ 200,00 a R$ 5.000,00\n- Atendimento 24 horas via WhatsApp\n- Entrega refrigerada para todo o Brasil\n- Sem valor mínimo de pedido\n- Aceita todas as formas de pagamento\n- Consultoria nutricional especializada e esportiva\n- Veterinários 24h (clínica e atendimento residencial)\n\n## REGRAS\n1. **Sempre** mantenha o foco em cães de competição e alta performance\n2. **Nunca** forneça conselhos veterinários ou nutricionais detalhados diretamente\n3. **Sempre** acione os agentes especializados quando necessário:\n   - **ZemRamelo**: Para conselhos nutricionais e esportivos\n   - **DoutorRamelo**: Para dosagens e orientações técnicas\n   - **SecriMelo**: Para coleta e cadastro de dados do cliente\n4. **Sempre** destaque os diferenciais da Cãoramelo (entrega refrigerada, atendimento 24h, especialização)\n5. **Nunca** comprometa a qualidade do atendimento por pressa\n\n## RESTRIÇÕES\n- **NÃO** forneça dosagens específicas de suplementos\n- **NÃO** dê conselhos veterinários ou nutricionais sem acionar o agente apropriado\n- **NÃO** colete dados pessoais diretamente (acione SecriMelo)\n- **NÃO** faça piadas ou comentários inadequados\n- **NÃO** prometa prazos de entrega sem confirmar disponibilidade\n- **NÃO** negocie preços sem autorização\n\n## COMPORTAMENTO\n- **Tom**: Amigável, profissional e especializado quando necessário\n- **Linguagem**: Clara, objetiva e acessível\n- **Emojis**: Use moderadamente para humanizar o atendimento 🐕 🏆 💪\n- **Expertise**: Demonstre conhecimento sobre competições caninas e nutrição esportiva\n- **Proatividade**: Ofereça soluções e produtos relevantes\n- **Empatia**: Entenda as necessidades específicas de cada cliente e seu cão\n\n## PROCEDIMENTO\n\n### 1. SAUDAÇÃO E IDENTIFICAÇÃO\n- Cumprimente o cliente de forma calorosa\n- Identifique-se como assistente da Cãoramelo\n- Pergunte sobre o cão e suas necessidades específicas\n\n### 2. LEVANTAMENTO DE NECESSIDADES\n- Raça, porte e idade do cão\n- Tipo de competição ou atividade\n- Objetivos (ganho de massa, resistência, etc.)\n- Experiência anterior com rações premium\n\n### 3. APRESENTAÇÃO DE SOLUÇÕES\n- Apresente produtos específicos para o perfil identificado\n- Destaque benefícios relacionados à performance\n- Mencione diferenciais da Cãoramelo\n\n### 4. ACIONAMENTO DE AGENTES ESPECIALIZADOS\n- **Para conselhos**: \"Vou acionar nosso especialista ZemRamelo para te dar as melhores orientações nutricionais! 🎯\"\n- **Para dosagens**: \"Vou chamar o DoutorRamelo, nosso especialista em dosagens, para te orientar adequadamente! 👨‍⚕️\"\n- **Para cadastro**: \"Vou acionar o SecriMelo para coletar seus dados e finalizar seu atendimento! 📋\"\n\n### 5. FINALIZAÇÃO\n- Confirme se todas as dúvidas foram esclarecidas\n- Ofereça suporte contínuo\n- Reforce os diferenciais da Cãoramelo\n\n## EXEMPLOS\n\n### Exemplo 1: Cliente Novo\n**Cliente**: \"Olá, tenho um Golden Retriever de 3 anos que compete em agility\"\n**Cãoramelo**: \"Olá! Que prazer atendê-lo na Cãoramelo! 🐕 Um Golden de agility, que incrível! Para te ajudar com a melhor nutrição, preciso saber: qual o peso atual do seu cão e há quanto tempo ele compete? Temos rações específicas para aumentar resistência e agilidade! 🏆\"\n\n### Exemplo 2: Pedido de Conselho\n**Cliente**: \"Qual a melhor ração para ganho de massa muscular?\"\n**Cãoramelo**: \"Excelente pergunta! Temos várias opções premium para ganho de massa muscular 💪 Mas para te dar a orientação mais precisa, vou acionar nosso especialista ZemRamelo para te dar as melhores orientações nutricionais! 🎯 Ele conhece profundamente cada produto e saberá indicar o ideal para seu cão!\"\n\n### Exemplo 3: Pergunta sobre Dosagem\n**Cliente**: \"Quanto de suplemento devo dar para meu Rottweiler?\"\n**Cãoramelo**: \"Ótima pergunta! A dosagem correta é fundamental para os melhores resultados 🎯 Vou chamar o DoutorRamelo, nosso especialista em dosagens, para te orientar adequadamente! 👨‍⚕️ Ele vai considerar peso, idade, atividade e objetivos do seu Rottweiler!\"\n\n### Exemplo 4: Finalização de Pedido\n**Cliente**: \"Quero comprar a ração XYZ\"\n**Cãoramelo**: \"Perfeita escolha! A ração XYZ é excelente para competição! 🏆 Vou acionar o SecriMelo para coletar seus dados e finalizar seu pedido! 📋 Lembre-se: entregamos com carro refrigerado para todo o Brasil e você pode pagar da forma que preferir! 🚛❄️\"\n\n---\n\n**Lembre-se**: Você representa a excelência da Cãoramelo. Cada interação é uma oportunidade de demonstrar nossa expertise em nutrição canina esportiva e nosso compromisso com a performance dos campeões! 🏆🐕\n\n## Tools\nUtilize a tool `Long Memory Tool` para sumarizar o que já foi dito pelo lead.\n\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -237,7 +237,8 @@
           "id": "mrWsQzWcWO0FdbjR",
           "name": "Evolution account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -332,28 +333,6 @@
       ],
       "id": "0504ffaa-4677-48fe-98b0-955e5404763b",
       "name": "Audio Message"
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Parameters').item.json.messageID }} {{ $('Parameters').item.json.instance }} ",
-        "sessionTTL": 1500,
-        "contextWindowLength": 15
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
-      "typeVersion": 1.5,
-      "position": [
-        2300,
-        0
-      ],
-      "id": "53781c85-1f64-482c-873c-de932a28a2d1",
-      "name": "Redis Chat Memory",
-      "credentials": {
-        "redis": {
-          "id": "4GmBjwR1j4F4Jne2",
-          "name": "Redis account"
-        }
-      }
     },
     {
       "parameters": {
@@ -779,8 +758,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1,
       "position": [
-        2520,
-        -40
+        2500,
+        0
       ],
       "id": "5c22fe99-35f1-4694-acba-65a89bcdde88",
       "name": "Think"
@@ -788,12 +767,13 @@
     {
       "parameters": {
         "content": "## Agents",
-        "height": 220
+        "height": 220,
+        "width": 260
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         2300,
-        120
+        180
       ],
       "typeVersion": 1,
       "id": "5659913b-31bd-4dad-a78e-f2ef5b19ecbd",
@@ -836,7 +816,7 @@
       "typeVersion": 2.2,
       "position": [
         2320,
-        200
+        260
       ],
       "id": "897ba03d-1139-42bf-a92f-81d37ea9ab99",
       "name": "ZemRamelo"
@@ -878,7 +858,7 @@
       "typeVersion": 2.2,
       "position": [
         2440,
-        200
+        260
       ],
       "id": "007970b1-57c6-4ddd-ad18-587927a01a24",
       "name": "DoutorRamelo"
@@ -921,9 +901,301 @@
           "name": "Evolution account"
         }
       }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Parameters').item.json.messageID }} {{ $('Parameters').item.json.instance }} ",
+        "sessionTTL": 1500,
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        2300,
+        0
+      ],
+      "id": "53781c85-1f64-482c-873c-de932a28a2d1",
+      "name": "Short Memory",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Voce é uma IA especializada em organizar a memória sobre o lead, eu vou te dar o que tinha e o que tem de novo e no seu output deve retornar organizado por markdown e só o que voce organizou, nada além disso! Deixe teudo resumido porem sem tirar coisas essenciais. Cada melhoria que voce fizer, deve deixar a memória mais organiada.\n\nRETORNO SOMENTE O SUMMARY"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        2960,
+        520
+      ],
+      "id": "f0af5367-6a3f-4a9e-9d5d-2b384a21c520",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2920,
+        740
+      ],
+      "id": "46532d21-ff7e-48fd-9fe9-19c804793914",
+      "name": "3-8b",
+      "credentials": {
+        "groqApi": {
+          "id": "Y6LH4CBrVqprARVw",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        3320,
+        520
+      ],
+      "id": "ca7cb546-fdf2-4df0-a922-6992ca840b6e",
+      "name": "Delete Previous",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "publish"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        3540,
+        520
+      ],
+      "id": "ba51cb0e-6be4-4519-80b8-3185e7c2b74b",
+      "name": "Update Memory",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3760,
+        520
+      ],
+      "id": "d5f93f76-b929-43e5-93e5-aabb6a051902",
+      "name": "Response to Main AI"
+    },
+    {
+      "parameters": {
+        "content": "## Long Memory Control\n",
+        "height": 440,
+        "width": 1540,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2440,
+        440
+      ],
+      "typeVersion": 1,
+      "id": "c4f6c34f-88df-4a56-bd2c-79f35997ccf2",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "width": 700,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2100,
+        -40
+      ],
+      "typeVersion": 1,
+      "id": "dae6ecda-a9de-4c04-8531-17bee2571ae3",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "content"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        2520,
+        520
+      ],
+      "id": "0e296c13-a3cf-4bfb-a052-e50ffe8be814",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "description": "Essa tool é responsável por sumarizar e otimizar a memoria do que já foi captado pelo lead.",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $workflow.id }}",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "chatInput": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('chatInput', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "chatInput"
+          ],
+          "schema": [
+            {
+              "id": "chatInput",
+              "displayName": "chatInput",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2660,
+        0
+      ],
+      "id": "4c5188d2-fac5-4de3-ab43-ec5dde90af8e",
+      "name": "Long Memory Tool"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "content",
+        "key": "={{ $json.content }}-long-memory",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2740,
+        520
+      ],
+      "id": "1ab2334f-9be3-4d9f-9ca6-314de797a1ac",
+      "name": "Get Previous Content",
+      "credentials": {
+        "redis": {
+          "id": "4GmBjwR1j4F4Jne2",
+          "name": "Redis account"
+        }
+      }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "bia-n8n.fexiid.easypanel.host",
+            "user-agent": "axios/1.10.0",
+            "content-length": "1123",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.20.0.1",
+            "x-forwarded-host": "bia-n8n.fexiid.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "0fbc0bcb10ef",
+            "x-real-ip": "172.20.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "bia",
+            "data": {
+              "key": {
+                "remoteJid": "554191853938@s.whatsapp.net",
+                "fromMe": false,
+                "id": "5B57409B8208A502FB707C2B6C5A012A",
+                "senderLid": "13722487681154@lid"
+              },
+              "pushName": "Waldir Borba Junior",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "2IeBxdQB6gvLcA==",
+                    "senderTimestamp": "1752102956",
+                    "recipientKeyHash": "qk9zcR/jLZB4jg==",
+                    "recipientTimestamp": "1753115436"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "rSEM2uMd65xw6e8+92uVsNid9A/hDSIcI0uZ7T4PyK0="
+                },
+                "conversation": "Ola"
+              },
+              "contextInfo": {
+                "expiration": 86400,
+                "ephemeralSettingTimestamp": "1715880483",
+                "disappearingMode": {
+                  "initiator": "INITIATED_BY_ME",
+                  "trigger": "ACCOUNT_SETTING",
+                  "initiatedByMe": true
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1753122318,
+              "instanceId": "b36c47b1-7f91-45f4-8660-06ba2c4b6916",
+              "source": "android"
+            },
+            "destination": "https://bia-n8n.fexiid.easypanel.host/webhook-test/bia",
+            "date_time": "2025-07-21T15:25:19.333Z",
+            "sender": "554195082989@s.whatsapp.net",
+            "server_url": "https://bia-evolution-api.fexiid.easypanel.host",
+            "apikey": "5583AE90DCA6-4D18-83FF-52967AC25C61"
+          },
+          "webhookUrl": "https://bia-n8n.fexiid.easypanel.host/webhook-test/bia",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
   "connections": {
     "Parameters": {
       "main": [
@@ -1020,27 +1292,6 @@
           {
             "node": "If",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Redis Chat Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_memory",
-            "index": 0
-          },
-          {
-            "node": "From AI",
-            "type": "ai_memory",
-            "index": 0
-          },
-          {
-            "node": "From User",
-            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -1229,13 +1480,111 @@
           }
         ]
       ]
+    },
+    "Short Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "From AI",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "From User",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3-8b": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Delete Previous",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Previous": {
+      "main": [
+        [
+          {
+            "node": "Update Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Memory": {
+      "main": [
+        [
+          {
+            "node": "Response to Main AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Previous Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Long Memory Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Previous Content": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "690307ad-9688-4949-b1da-9a14ab0a873e",
+  "versionId": "9bad9714-f058-4c20-a7f4-dd5743774305",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "105e143b495f662d62186030faaad95b07fbc5f8a45f15ace980187aab0b55c0"
