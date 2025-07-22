@@ -876,29 +876,6 @@
     },
     {
       "parameters": {
-        "resource": "chat-api",
-        "operation": "get-media-base64",
-        "instanceName": "={{ $json.instance }}",
-        "messageId": "={{ $json.id }}",
-        "convertToMp4": "={{ false }}"
-      },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
-      "position": [
-        -740,
-        -40
-      ],
-      "id": "ea90f19b-c7c4-4e6b-8e83-56dcb2f0af59",
-      "name": "Obter audio em base64",
-      "credentials": {
-        "evolutionApi": {
-          "id": "mrWsQzWcWO0FdbjR",
-          "name": "Evolution account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('Parameters').item.json.messageID }} {{ $('Parameters').item.json.instance }} ",
         "sessionTTL": 1500,
@@ -1196,6 +1173,29 @@
       ],
       "id": "2b3e7a5a-b20b-4622-86ea-41dba3a7156d",
       "name": "Groq Transcription"
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "={{ $json.instance }}",
+        "messageId": "={{ $json.id }}",
+        "convertToMp4": "={{ false }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -40
+      ],
+      "id": "ea90f19b-c7c4-4e6b-8e83-56dcb2f0af59",
+      "name": "Audio to base64",
+      "credentials": {
+        "evolutionApi": {
+          "id": "mrWsQzWcWO0FdbjR",
+          "name": "Evolution account"
+        }
+      }
     }
   ],
   "pinData": {
@@ -1341,7 +1341,7 @@
         ],
         [
           {
-            "node": "Obter audio em base64",
+            "node": "Audio to base64",
             "type": "main",
             "index": 0
           }
@@ -1561,17 +1561,6 @@
         ]
       ]
     },
-    "Obter audio em base64": {
-      "main": [
-        [
-          {
-            "node": "Convert to File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Short Memory": {
       "ai_memory": [
         [
@@ -1680,13 +1669,24 @@
           }
         ]
       ]
+    },
+    "Audio to base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "c7492082-7193-4cad-a3eb-ab624d8b9416",
+  "versionId": "44556a64-b1a3-4407-8382-82c946f53b07",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "105e143b495f662d62186030faaad95b07fbc5f8a45f15ace980187aab0b55c0"
